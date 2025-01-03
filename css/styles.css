@@ -4,11 +4,21 @@ body, h1, ul, li {
     padding: 0;
     box-sizing: border-box;
   }
-  
+
+  body {
+    background: url(../vis/crowd_crop.svg); /* Replace with the correct image format */
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center bottom;
+    background-size: contain; /* Or 'cover' if you want it to fill the viewport */
+    overflow-x: hidden;
+}
+
+  /*
   body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
-  }
+  }*/
   
   header {
     background-color: #f0d156; /* Yellow background */
@@ -46,7 +56,6 @@ body, h1, ul, li {
     justify-content: center;
     align-items: center;
     height: 80vh;
-    background-color: #fff;
   }
   
   .art-container img {
