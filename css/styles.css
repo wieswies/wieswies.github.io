@@ -46,7 +46,7 @@ header {
   list-style: none;
   display: flex;
   justify-content: center;
-  gap: 30px; /* Spacing between links */
+  gap: 30px; 
   margin-top: 15px;
 }
 
@@ -67,10 +67,14 @@ header {
   }
 
   .nav_links {
-    gap: 15px; /* Reduce spacing on smaller screens */
+    gap: 15px;
   }
 
   .nav_links li a {
     font-size: 14px;
   }
+}
+
+#svg-container #individual:hover path {
+  fill: rgb(243, 186, 28);
 }
