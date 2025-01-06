@@ -8,7 +8,7 @@
   src: url(fonts/Quosm.otf);
 }
 
-/* Set-Up */
+/* General Styles */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -19,76 +19,58 @@ html {
   scroll-behavior: smooth;
 }
 
-section {
-  min-height: 100vh;
-  size: cover;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 body {
-  background: url(../vis/crowd_crop.svg); /* Replace with the correct image format */
+  background: url(../vis/crowd_crop.svg);
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: center bottom;
-  background-size: contain; /* Or 'cover' if you want it to fill the viewport */
+  background-size: contain;
   overflow-x: hidden;
-}
-
-/* Index
-Header */
-li,
-a {
-  font-family: "Quosm";
-  font-size: 16px;
-  text-decoration: none;
-  margin: 10px;
+  font-family: "Quosm", sans-serif;
+  color: #438DC6;
 }
 
 header {
-  color: rgb(183, 44, 44);
-  position: fixed;
-  z-index: 1;
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  padding: 10px 10%;
-}
-
-
-.header_title {
-  font-family: "Quosm-Bold";
-  color: #438DC6;
-  cursor: pointer;
-  margin-right: auto;
-  vertical-align: middle;
+  text-align: center;
+  padding: 20px 10%;
 }
 
 .header_title a {
   font-family: "Quosm-Bold";
+  font-size: 24px;
   color: #438DC6;
-  cursor: crosshair;
-  margin-right: auto;
+  text-decoration: none;
 }
 
 .nav_links {
   list-style: none;
-  color: #438DC6;
-}
-
-.nav_links li {
-  display: inline-block;
-  padding: 0px 20px;
+  display: flex;
+  justify-content: center;
+  gap: 30px; /* Spacing between links */
+  margin-top: 15px;
 }
 
 .nav_links li a {
+  font-size: 16px;
   color: #438DC6;
-  transition: all 0.2s ease 0s;
+  text-decoration: none;
+  transition: color 0.2s ease;
 }
 
 .nav_links li a:hover {
   color: rgb(243, 186, 28);
-  cursor: crosshair;
+}
+
+@media (max-width: 768px) {
+  .header_title a {
+    font-size: 20px;
+  }
+
+  .nav_links {
+    gap: 15px; /* Reduce spacing on smaller screens */
+  }
+
+  .nav_links li a {
+    font-size: 14px;
+  }
 }
