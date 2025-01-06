@@ -8,7 +8,7 @@
   src: url(fonts/Quosm.otf);
 }
 
-/* General Styles */
+/* General */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -20,11 +20,12 @@ html {
 }
 
 body {
-  background: url(../vis/crowd_crop.svg);
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: center bottom;
   background-size: contain;
+  position: relative;
+  min-height: 100vh;
   overflow-x: hidden;
   font-family: "Quosm", sans-serif;
   color: #438DC6;
@@ -75,6 +76,73 @@ header {
   }
 }
 
-#svg-container #individual:hover path {
+/* Crowd and animations */
+.crowd-container {
+  width: 100%;        
+  display: flex;      
+  justify-content: center; 
+  align-items: flex-end;    
+  position: absolute;
+  bottom: 0;
+}
+
+.crowd-container svg {
+  max-width: 100%;       
+  max-height: 100%;       
+  display: block;        
+}
+
+#crowd-container #individual:hover path {
   fill: rgb(243, 186, 28);
 }
+
+/* General Styles for Callout Modal */
+.callout-modal {
+  display: none; /* Initially hidden */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent overlay */
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.callout-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  position: relative;
+  max-width: 90%;
+  max-height: 80%;
+  overflow: auto;
+}
+
+.callout-svg {
+  width: 100%;
+  height: auto;
+}
+
+.callout-modal #callout-text {
+  font-size: 18px;
+  color: #333;
+  margin-top: 20px;
+}
+
+.callout-modal #close-callout {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #438DC6;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#close-callout:hover {
+  background-color: rgb(243, 186, 28);
+}
+
