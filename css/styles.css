@@ -22,18 +22,19 @@ html {
 main {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  align-items: center; 
-  height: 100vh;
-  position: relative;
+  justify-content: center;   /* vertical center */
+  align-items: center;       /* horizontal center */
+  min-height: 100vh;         /* full screen height */
+  padding: 2rem 1rem;        /* breathing room */
+  text-align: center;
 }
 
 body {
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: center bottom;
-  background-size: contain;
-  background-color: rgb(49, 26, 26);
+  background-size: auto 40%; 
+  background-color: #ffffff;
   position: relative;
   min-height: 100vh;
   height: 100vh;
@@ -45,7 +46,7 @@ body {
 }
 
 header {
-  background-color: coral;
+  background-color: #ffffff;
   text-align: center;
   padding: 20px 10%;
 }
@@ -53,7 +54,7 @@ header {
 .header_title a {
   font-family: "Quosm-Bold";
   font-size: 24px;
-  color: #ffffff;
+  color: black;
   text-decoration: none;
 }
 
@@ -73,19 +74,49 @@ header {
 }
 
 .nav_links li a:hover {
-  color: rgb(255, 255, 255);
+  color: rgb(13, 131, 170);
 }
 
 @media (max-width: 768px) {
-  .header_title a {
-    font-size: 20px;
+  .home_vis img {
+    width: 100%;     /* on mobile: full width */
+    max-width: none; /* allow full bleed */
   }
+}
 
-  .nav_links {
-    gap: 15px;
-  }
+.nav_links {
+  gap: 15px;
+}
 
-  .nav_links li a {
-    font-size: 14px;
-  }
+.nav_links li a {
+  font-size: 14px;
+}
+
+.home_vis img {
+  width: 75%;        /* desktop: takes 60% of screen */
+  max-width: 400px;  /* prevents growing too large */
+  height: auto;      /* keeps aspect ratio */
+  margin-top: -2rem; /* lift the visual upwards */
+}
+
+.bio {
+  max-width: 300px;
+  font-family: "Quosm";
+  font-size: 0.7rem;
+  line-height: 0.95;
+  color: #000;
+  margin-top: 0;    /* remove extra top margin */
+}
+
+.bio a {
+  color: inherit;          /* make link the same color as normal text */
+  text-decoration: none;   /* remove default underline */
+  transition: all 0.2s;    /* smooth hover effect */
+}
+
+.bio a:hover,
+.bio a:active {
+  text-decoration: underline;
+  text-decoration-color: #d9246f;  /* red underline on hover/click */
+  text-underline-offset: 2px;      /* optional: space between text and underline */
 }

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>workshops</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" type="image/svg+xml" href="./vis/mirror_of_interests.svg">
+  <style>
+    .workshops-container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      color: #000;
+      text-align: center;
+    }
+    
+    .bio {
+      max-width: 300px;
+      font-family: "Quosm";
+      font-size: 0.7rem;
+      line-height: 0.95;
+      color: #000;
+      margin-top: 0;    /* remove extra top margin */
+    }
+
+    .bio a {
+      color: inherit;          /* make link the same color as normal text */
+      text-decoration: none;   /* remove default underline */
+      transition: all 0.2s;    /* smooth hover effect */
+    }
+
+    .bio a:hover,
+    .bio a:active {
+      text-decoration: underline;
+      text-decoration-color: #d9246f;  /* red underline on hover/click */
+      text-underline-offset: 2px;      /* optional: space between text and underline */
+    }
+    
+    .crowd img {
+      width: 50%;        /* desktop: takes 60% of screen */
+      height: auto;      /* keeps aspect ratio */
+      margin-top: -2rem; /* lift the visual upwards */
+    }
+    
+    .balloon:after {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 15px solid transparent;
+      border-right: 15px solid transparent;
+      border-top: 15px solid #f0f0f0;
+    }
+    
+    .balloon-content {
+      font-family: "Quosm-Bold";
+      font-size: 0.8rem;
+      text-align: center;
+      padding: 0 10px;
+    }
+    
+    @media (max-width: 768px) {
+      .workshops-container {
+        margin: 1rem auto;
+      }
+      
+      .speech-balloons {
+        gap: 0rem;
+      }
+      
+      .balloon {
+        width: 100px;
+        height: 100px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header_title"> 
+      <a href="index.html">wies ruyters</a>
+    </div>
+    <nav>
+      <ul class="nav_links">
+        <li><a href="research.html">research</a></li>
+        <!--<li><a href="presentations.html">presentations</a></li>-->
+        <li><a href="workshops.html">workshops</a></li>
+        <li><a href="connect.html">connect</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <div class="crowd">
+    <img 
+      src="./vis/crowd_color_text.svg"
+      alt="crowd_of_doubt" />
+  </div>
+    <div class="bio">
+        <p>In a team of motivated PhD colleagues from our Strategic Communication Group at 
+            Wageningen University and Research, we host workshops for a diverse range of groups.
+            We have most experience with students and scholars, but our format is flexible to be
+            adjusted to any group of professionals.
+            <br><br> 
+            Interested to find out what we can bring to your institution?
+            <br>
+            Let's connect: <a href="mailto:wies.ruyters@wur.nl">wies.ruyters@wur.nl</a>
+            </p>
+    </div>
+  </main>
+</body>
+</html>

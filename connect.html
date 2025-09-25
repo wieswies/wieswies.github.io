@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connect - Wies Ruyters</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <!-- Add Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="icon" type="image/svg+xml" href="./vis/mirror_of_interests.svg">
+  <style>
+
+    .connect img {
+      width: 35%;        /* desktop: takes 60% of screen */
+      height: auto;      /* keeps aspect ratio */
+      margin-top: -2rem; /* lift the visual upwards */
+    }
+
+    .connect-container {
+      max-width: 600px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      color: #000;
+      text-align: center;
+    }
+    
+    .connect-title {
+      font-family: "Quosm";
+      color: rgb(13, 131, 170);
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      text-transform: lowercase;
+    }
+    
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+    
+    .social-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      color: #000;
+      transition: transform 0.2s;
+      width: 80px;
+    }
+    
+    .social-link:hover {
+      transform: translateY(-5px);
+    }
+    
+    .social-icon {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 0.5rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      background-color: #f0f0f0;
+    }
+    
+    .social-name {
+      font-size: 0.8rem;
+      text-transform: lowercase;
+    }
+    
+    @media (max-width: 768px) {
+      .connect-container {
+        margin: 1rem auto;
+      }
+      
+      .social-links {
+        gap: 1.5rem;
+      }
+      
+      .social-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header_title"> 
+      <a href="index.html">wies ruyters</a>
+    </div>
+    <nav>
+      <ul class="nav_links">
+        <li><a href="research.html">research</a></li>
+        <!--<li><a href="presentations.html">presentations</a></li>-->
+        <li><a href="workshops.html">workshops</a></li>
+        <li><a href="connect.html">connect</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <div class="connect">
+        <img 
+            src="./vis/get_in_touch.svg"
+            alt="get_in_touch" />
+    </div>
+
+
+    <div class="connect-container">
+      <div class="social-links">
+        <!-- Replace URLs with your actual profile links -->
+        <a href="https://scholar.google.com/citations?user=jTb0bGYAAAAJ&hl=nl&oi=ao" class="social-link" target="_blank">
+          <div class="social-icon"><i class="fas fa-graduation-cap"></i></div>
+          <span class="social-name">scholar</span>
+        </a>
+        <a href="https://github.com/wieswies" class="social-link" target="_blank">
+          <div class="social-icon"><i class="fab fa-github"></i></div>
+          <span class="social-name">github</span>
+        </a>
+        <a href="https://www.linkedin.com/in/wies-ruyters-5a3741134/" class="social-link" target="_blank">
+          <div class="social-icon"><i class="fab fa-linkedin-in"></i></div>
+          <span class="social-name">linkedin</span>
+        </a>
+        <a href="https://youtube.com/@YOUR_CHANNEL" class="social-link" target="_blank">
+          <div class="social-icon"><i class="fab fa-youtube"></i></div>
+          <span class="social-name">youtube</span>
+        </a>
+        <a href="https://bsky.app/profile/wieswies.bsky.social" class="social-link" target="_blank">
+          <div class="social-icon"><i class="fas fa-feather"></i></div>
+          <span class="social-name">bluesky</span>
+        </a>
+        </a>
+        <div class="bio">
+            <p>
+            <a href="mailto:wies.ruyters@wur.nl" 
+            <span class="social-name">wies.ruyters@wur.nl</span></p>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
