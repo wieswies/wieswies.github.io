@@ -19,11 +19,21 @@ html {
   scroll-behavior: smooth;
 }
 
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center; 
+  height: 100vh;
+  position: relative;
+}
+
 body {
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: center bottom;
   background-size: contain;
+  background-color: rgb(49, 26, 26);
   position: relative;
   min-height: 100vh;
   height: 100vh;
@@ -31,10 +41,11 @@ body {
   overflow-y: hidden;
   touch-action: none;
   font-family: "Quosm", sans-serif;
-  color: #438DC6;
+  color: #ffffff;
 }
 
 header {
+  background-color: coral;
   text-align: center;
   padding: 20px 10%;
 }
@@ -42,7 +53,7 @@ header {
 .header_title a {
   font-family: "Quosm-Bold";
   font-size: 24px;
-  color: #438DC6;
+  color: #ffffff;
   text-decoration: none;
 }
 
@@ -56,13 +67,13 @@ header {
 
 .nav_links li a {
   font-size: 16px;
-  color: #438DC6;
+  color: #d9246f;
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .nav_links li a:hover {
-  color: rgb(243, 186, 28);
+  color: rgb(255, 255, 255);
 }
 
 @media (max-width: 768px) {
@@ -77,24 +88,4 @@ header {
   .nav_links li a {
     font-size: 14px;
   }
-}
-
-/* Crowd and animations */
-.crowd-container {
-  width: 100%;        
-  display: flex;      
-  justify-content: center; 
-  align-items: flex-end;    
-  position: absolute;
-  bottom: 0;
-}
-
-.crowd-container svg {
-  max-width: 80vh;       
-  max-height: 100%;       
-  display: block;        
-}
-
-#crowd-container #individual:hover path {
-  fill: rgb(243, 186, 28);
 }
