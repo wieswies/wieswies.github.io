@@ -108,6 +108,7 @@ header {
 
 .bio {
   max-width: 300px;
+  text-align: center;
   font-family: "Quosm";
   font-size: 0.7rem;
   line-height: 0.95;
@@ -116,7 +117,7 @@ header {
 }
 
 .bio a {
-  color: inherit;          /* make link the same color as normal text */
+  color: #d9246f;
   text-decoration: none;   /* remove default underline */
   transition: all 0.2s;    /* smooth hover effect */
 }
@@ -124,7 +125,7 @@ header {
 .bio a:hover,
 .bio a:active {
   text-decoration: underline;
-  text-decoration-color: #d9246f;  /* red underline on hover/click */
+  text-decoration-color: rgb(13, 131, 170);  /* red underline on hover/click */
   text-underline-offset: 2px;      /* optional: space between text and underline */
 }
 
