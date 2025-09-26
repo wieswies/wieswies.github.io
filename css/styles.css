@@ -260,7 +260,6 @@ header {
 
 
 /* CONNECT */
-
 .connect img {
   width: 50%;        /* desktop: takes 60% of screen */
   height: auto;      /* keeps aspect ratio */
