@@ -24,7 +24,7 @@ main {
   flex-direction: column;
   justify-content: center;   /* vertical center */
   align-items: center;       /* horizontal center */
-  min-height: 100vh;         /* full screen height */
+  /*min-height: 100vh;         /* full screen height */
   padding: 2rem 1rem;        /* breathing room */
   text-align: center;
 }
@@ -32,7 +32,7 @@ main {
 body {
   background-repeat: no-repeat;
   background-attachment: fixed;
-  background-position: center bottom;
+  background-position: center;
   background-size: auto 40%; 
   background-color: #ffffff;
   position: relative;
@@ -92,11 +92,18 @@ header {
   font-size: 14px;
 }
 
+.home_content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0rem; /* spacing between image and bio */
+}
+
 .home_vis img {
   width: 75%;        /* desktop: takes 60% of screen */
   max-width: 400px;  /* prevents growing too large */
   height: auto;      /* keeps aspect ratio */
-  margin-top: -2rem; /* lift the visual upwards */
+  margin-top: 0; /* lift the visual upwards */
 }
 
 .bio {
