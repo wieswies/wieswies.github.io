@@ -204,51 +204,57 @@ header {
       margin: 2rem auto;
       padding: 0 1rem;
       color: #000;
-    }
-    
-    .research-title {
-      font-family: "Quosm-Bold";
-      color: rgb(13, 131, 170);
-      font-size: 2rem;
-      margin-bottom: 1.5rem;
-      text-align: center;
-    }
-    
-    .citation-list {
-      list-style: none;
-    }
-    
-    .citation-item {
-      margin-bottom: 1.5rem;
-      padding-bottom: 1.5rem;
-      border-bottom: 1px solid #eee;
-    }
-    
-    .citation-text {
-      font-size: 0.9rem;
-      line-height: 1.4;
-      margin-bottom: 0.5rem;
-    }
-    
-    .citation-link {
-      color: #d9246f;
-      text-decoration: none;
-      font-size: 0.8rem;
-    }
-    
-    .citation-link:hover {
-      text-decoration: underline;
-    }
-    
-    @media (max-width: 768px) {
-      .research-container {
-        margin: 1rem auto;
-      }
-      
-      .research-title {
-        font-size: 1.5rem;
-      }
-    }
+}
+
+.research_vis img {
+  max-width: 200px;  /* prevents growing too large */
+  height: auto;      /* keeps aspect ratio */
+  margin-top: 0; /* lift the visual upwards */
+}
+
+.research-title {
+  font-family: "Quosm-Bold";
+  color: rgb(13, 131, 170);
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.citation-list {
+  list-style: none;
+}
+
+.citation-item {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #eee;
+}
+
+.citation-text {
+  font-size: 0.9rem;
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+}
+
+.citation-link {
+  color: #d9246f;
+  text-decoration: none;
+  font-size: 0.8rem;
+}
+
+.citation-link:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .research-container {
+    margin: 1rem auto;
+  }
+  
+  .research-title {
+    font-size: 1.5rem;
+  }
+}
 
 /* WORKSHOPS */
   
