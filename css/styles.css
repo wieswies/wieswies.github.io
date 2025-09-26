@@ -8,7 +8,7 @@
   src: url(fonts/Quosm.otf);
 }
 
-/* General */
+/* HOME */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -119,4 +119,223 @@ header {
   text-decoration: underline;
   text-decoration-color: #d9246f;  /* red underline on hover/click */
   text-underline-offset: 2px;      /* optional: space between text and underline */
+}
+
+/* PRESENTATIONS */
+
+.presentations-container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  color: #000;
+}
+
+.presentations-title {
+  font-family: "Quosm-Bold";
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.video-item {
+  background: #f9f9f9;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.video-wrapper {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  height: 0;
+  overflow: hidden;
+}
+
+.video-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.video-title {
+  font-family: "Quosm-Bold";
+  margin: 1rem 0 0.5rem;
+  font-size: 1.1rem;
+}
+
+.video-description {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+@media (max-width: 768px) {
+  .presentations-container {
+    margin: 1rem auto;
+  }
+  
+  .video-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+/* RESEARCH */
+
+.research-container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      color: #000;
+    }
+    
+    .research-title {
+      font-family: "Quosm-Bold";
+      color: rgb(13, 131, 170);
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    
+    .citation-list {
+      list-style: none;
+    }
+    
+    .citation-item {
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .citation-text {
+      font-size: 0.9rem;
+      line-height: 1.4;
+      margin-bottom: 0.5rem;
+    }
+    
+    .citation-link {
+      color: #d9246f;
+      text-decoration: none;
+      font-size: 0.8rem;
+    }
+    
+    .citation-link:hover {
+      text-decoration: underline;
+    }
+    
+    @media (max-width: 768px) {
+      .research-container {
+        margin: 1rem auto;
+      }
+      
+      .research-title {
+        font-size: 1.5rem;
+      }
+    }
+
+/* WORKSHOPS */
+  
+.crowd img {
+  width: 75%;        /* desktop: takes 60% of screen */
+  max-width: 500px;  /* prevents growing too large */
+  height: auto;      /* keeps aspect ratio */
+  margin-top: -2rem; /* lift the visual upwards */
+}
+
+
+/* CONNECT */
+
+.connect img {
+  width: 50%;        /* desktop: takes 60% of screen */
+  height: auto;      /* keeps aspect ratio */
+  margin-top: -2rem; /* lift the visual upwards */
+}
+
+.connect-container {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  color: #000;
+  text-align: center;
+}
+
+.connect-title {
+  font-family: "Quosm";
+  color: rgb(13, 131, 170);
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  text-transform: lowercase;
+}
+
+.social-links {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+.social-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: #000;
+  transition: transform 0.2s;
+  width: 80px;
+}
+
+.social-link:hover {
+  transform: translateY(-5px);
+}
+
+.social-icon {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 0.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  background-color: #f0f0f0;
+}
+
+.social-name {
+  font-size: 0.8rem;
+  text-transform: lowercase;
+}
+
+@media (max-width: 768px) {
+  .connect-container {
+    margin: 1rem auto;
+  }
+  
+  .social-links {
+    gap: 1.5rem;
+  }
+  
+  .social-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+  }
+}
+
+/* SVG hover effects */
+#GitHub_balloon:hover,
+#Scholar_balloon:hover,
+#LinkedIn_balloon:hover,
+#BlueSky_balloon:hover,
+#Youtube_balloon:hover {
+    cursor: pointer;
 }
