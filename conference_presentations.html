@@ -38,15 +38,17 @@
     padding: 230px 4vw 60px;
   }
 
+  /* the overview is one card about half the window wide (see
+     page_design/page_03), centered; the tags straddle its left edge */
   .conf-panel {
-    width: min(92vw, 1180px);
+    width: clamp(640px, 52.4vw, 900px);
     display: flex;
     flex-direction: column;
     align-items: center;
   }
 
   .conf-intro {
-    width: min(90vw, 900px);
+    width: 100%;
     margin: 0 auto 22px;
     text-align: center;
     font-family: var(--font-mono);
@@ -74,21 +76,41 @@
     padding: 4px 12px;
   }
 
+  /* rows stack into one card, alternating a brighter and a paler
+     white; the corners of the first and last row round it off */
   .conf-list {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 22px;
+  }
+
+  .conf-row {
+    background: rgba(255, 255, 255, 0.6);
+  }
+
+  .conf-row:nth-child(even) {
+    background: rgba(255, 255, 255, 0.3);
+  }
+
+  .conf-row:first-child {
+    border-radius: 6px 6px 0 0;
+  }
+
+  .conf-row:last-child {
+    border-radius: 0 0 6px 6px;
   }
 
   .conf-row-inner {
-    display: flex;
-    align-items: flex-start;
-    gap: 16px;
+    position: relative;
   }
 
+  /* tag sits centered on the card's left edge, halfway down its row */
   .conf-tag {
-    flex: 0 0 auto;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
     width: clamp(70px, 7vw, 92px);
     margin: 0;
     background: var(--lavender);
@@ -99,28 +121,29 @@
     letter-spacing: 0.02em;
     text-align: center;
     padding: 10px 6px;
-    align-self: flex-start;
   }
 
-  .conf-row--lg .conf-entries-frame {
+  .conf-row--sm .conf-tag {
+    width: fit-content;
+    font-size: clamp(11px, 1vw, 14px);
+    padding: 5px 8px;
+  }
+
+  /* room on the left for the tag, on the right for the < > buttons */
+  .conf-entries-frame {
     position: relative;
-    flex: 1;
     min-width: 0;
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.15));
-    border-radius: 6px;
-    padding: 14px 34px 18px 16px;
+    padding: 12px 5% 12px 10.2%;
   }
 
   .conf-row--sm .conf-entries-frame {
-    position: relative;
-    flex: 1;
-    min-width: 0;
-    padding: 6px 34px 6px 4px;
+    padding-top: 8px;
+    padding-bottom: 8px;
   }
 
   .conf-entries {
     display: flex;
-    gap: 16px;
+    gap: 20px;
     /* hidden, not auto: horizontal movement only ever comes from a
        row's own < / > buttons (scrollBy), never a drag/wheel/touch
        swipe - that swipe used to get mistaken for the page's own
@@ -137,7 +160,7 @@
 
   .conf-row-nav {
     position: absolute;
-    right: 6px;
+    right: 8px;
     top: 50%;
     transform: translateY(-50%);
     display: flex;
@@ -168,24 +191,27 @@
   }
 
   .conf-row-arrow[disabled] {
-    opacity: 0.3;
     cursor: default;
     pointer-events: none;
   }
 
+  /* three columns fill a row; a fourth and beyond are reached with
+     the row's < > buttons. Each entry is a tinted block with a navy bar. */
   .conf-entry {
     flex: 0 0 auto;
-    width: clamp(190px, 15.5vw, 250px);
+    width: calc((100% - 40px) / 3);
+    min-width: 170px;
     position: relative;
-    padding-left: 14px;
+    padding: 10px 8px 10px 14px;
+    background: rgba(165, 165, 213, 0.22);
   }
 
   .conf-entry::before {
     content: "";
     position: absolute;
     left: 0;
-    top: 2px;
-    bottom: 2px;
+    top: 0;
+    bottom: 0;
     width: 3px;
     background: var(--navy);
     transition: width 0.15s ease;
@@ -195,6 +221,8 @@
     width: 7px;
   }
 
+  /* blank placeholder column: keeps an older-only conference's
+     entries lined up under the same columns as the rows above */
   .conf-entry--spacer {
     visibility: hidden;
     pointer-events: none;
@@ -271,17 +299,36 @@
       padding: 300px 5vw 40px;
     }
 
+    .conf-panel {
+      width: min(92vw, 1180px);
+    }
+
     .conf-list {
       gap: 30px;
     }
 
+    .conf-row,
+    .conf-row:nth-child(even) {
+      background: none;
+      border-radius: 0;
+    }
+
     .conf-row-inner {
+      display: flex;
       flex-direction: column;
       gap: 10px;
     }
 
-    .conf-tag {
+    .conf-tag,
+    .conf-row--sm .conf-tag {
+      position: static;
+      transform: none;
       width: fit-content;
+    }
+
+    .conf-row--lg .conf-entries-frame {
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.15));
+      border-radius: 6px;
     }
 
     .conf-row--lg .conf-entries-frame,
@@ -290,10 +337,22 @@
       padding: 10px 30px 10px 4px;
     }
 
+    .conf-entries {
+      gap: 16px;
+    }
+
     /* one presentation block per box on mobile: entries take the
        full row width, paged one at a time with the < > buttons */
     .conf-entry {
       width: 100%;
+      min-width: 0;
+      padding: 0 0 0 14px;
+      background: none;
+    }
+
+    .conf-entry::before {
+      top: 2px;
+      bottom: 2px;
     }
 
     .conf-row-nav {
@@ -557,7 +616,7 @@
   <footer class="site-footer">© wies ruyters | 2026 | github pages</footer>
 
   <script src="js/gradient.js?v=2" defer></script>
-  <script src="js/conference.js?v=3" defer></script>
+  <script src="js/conference.js?v=4" defer></script>
   <script src="js/links.js?v=1" defer></script>
 </body>
 </html>
