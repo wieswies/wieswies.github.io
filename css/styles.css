@@ -1,354 +1,270 @@
-/* Fonts */
-@font-face {
-  font-family: "Quosm-Bold";
-  src: url(fonts/Quosm\ Bold.otf);
-}
-@font-face {
-  font-family: "Quosm";
-  src: url(fonts/Quosm.otf);
+/* =========================================================
+   Wies Ruyters — academic site
+   Shared design system: reset, gradient background, header
+   (menu + brand mark), footer, and small utilities.
+   Page-specific layout lives in the <style> block of each page
+   or in a page-specific section at the bottom of this file.
+   ========================================================= */
+
+@view-transition {
+  navigation: auto;
 }
 
-/* HOME */
+:root {
+  --navy: #053e76;
+  --navy-soft: rgba(5, 62, 118, 0.65);
+  --yellow: #ffc100;
+  --lavender: #a5a5d5;
+  --blue-accent: #c2daee;
+  --green: rgb(8, 211, 123);
+  --white: #ffffff;
+}
+
 * {
   box-sizing: border-box;
+}
+
+html,
+body {
   margin: 0;
   padding: 0;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-main {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;   /* vertical center */
-  align-items: center;       /* horizontal center */
-  /*min-height: 100vh;         /* full screen height */
-  padding: 2rem 1rem;        /* breathing room */
-  text-align: center;
+  height: 100%;
 }
 
 body {
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-position: center;
-  background-size: auto 40%; 
-  background-color: #ffffff;
+  font-family: var(--font-sans);
+  color: var(--navy);
+  overflow: hidden;
+  position: relative;
+}
+
+/* ---------- one continuous scrolling page ----------
+   plain scroll, no scroll-snap: snapping fought badly with
+   conference-presentations (much taller than 100vh) and made the
+   footer at the very bottom of contact hard to reach smoothly, so
+   sections just flow one after another and the browser scrolls
+   through them normally, top to bottom and back. */
+
+.scroll-container {
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.section {
   position: relative;
   min-height: 100vh;
-  height: 100vh;
-  overflow-x: hidden;
-  overflow-y: hidden;
-  touch-action: none;
-  font-family: "Quosm", sans-serif;
-  color: #ffffff;
 }
 
-header {
-  background-color: #ffffff;
-  text-align: center;
-  padding: 20px 10%;
+.section[hidden] {
+  display: none;
 }
 
-.header_title a {
-  font-family: "Quosm-Bold";
-  font-size: 24px;
-  color: black;
-  text-decoration: none;
+a {
+  color: inherit;
 }
 
-.nav_links {
-  list-style: none;
-  display: flex;
-  justify-content: center;
-  gap: 30px; 
-  margin-top: 15px;
+img {
+  max-width: 100%;
+  display: block;
 }
 
-.nav_links li a {
-  font-size: 16px;
-  color: #d9246f;
-  text-decoration: none;
-  transition: color 0.2s ease;
+::selection {
+  background: var(--yellow);
+  color: var(--navy);
 }
 
-.nav_links li a:hover {
-  color: rgb(13, 131, 170);
+/* ---------- animated gradient background ---------- */
+
+.gradient-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  --scroll-shift: 0deg;
+  background: conic-gradient(
+    from calc(var(--angle-base, 200deg) + var(--scroll-shift, 0deg)) at 45% 35%,
+    #ddc9ea 0%,
+    #c8d3ee 28%,
+    #bedcef 52%,
+    #cfc7ec 78%,
+    #ddc9ea 100%
+  );
 }
 
-@media (max-width: 768px) {
-  .home_vis img {
-    width: 100%;     /* on mobile: full width */
-    max-width: none; /* allow full bleed */
-  }
-}
+/* ---------- top-left menu ---------- */
 
-.nav_links {
-  gap: 15px;
-}
-
-.nav_links li a {
-  font-size: 14px;
-}
-
-.home_content {
+.menu {
+  position: fixed;
+  top: 24px;
+  left: 24px;
+  z-index: 30;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 0rem; /* spacing between image and bio */
+  align-items: flex-start;
+  font-family: var(--font-mono);
 }
 
-.home_vis img {
-  width: 75%;        /* desktop: takes 60% of screen */
-  max-width: 400px;  /* prevents growing too large */
-  height: auto;      /* keeps aspect ratio */
-  margin-top: 0; /* lift the visual upwards */
+.menu a {
+  display: block;
+  width: fit-content;
+  padding: 7px 16px;
+  font-size: 15px;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  background: var(--navy);
+  color: #fff;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.bio {
-  max-width: 300px;
-  text-align: center;
-  font-family: "Quosm";
-  font-size: 0.7rem;
-  line-height: 0.95;
-  color: #000;
-  margin-top: 0;    /* remove extra top margin */
+.menu a + a {
+  margin-top: 0;
 }
 
-.bio a {
-  color: #d9246f;
-  text-decoration: none;   /* remove default underline */
-  transition: all 0.2s;    /* smooth hover effect */
+.menu a.active {
+  background: var(--yellow);
+  color: #14110a;
+  font-weight: 700;
 }
 
-.bio a:hover,
-.bio a:active {
-  text-decoration: underline;
-  text-decoration-color: rgb(13, 131, 170);  /* red underline on hover/click */
-  text-underline-offset: 2px;      /* optional: space between text and underline */
+.menu a:not(.active):hover {
+  background: #0b4f8f;
 }
 
-/* PRESENTATIONS */
+/* ---------- brand mark (name tags + portrait + email) ----------
+   The hero (index.html only) is the standalone design SVG
+   (vis/vis_portrait+wies-ruyters.svg) loaded as a plain <img>, since
+   it needs no interactivity of its own. The corner mark (every page,
+   including index.html once scrolled past the hero) is inlined SVG
+   markup so its portrait and email sub-regions can each carry their
+   own hover/click behavior - portrait links back home, email links
+   to mailto:. Only the corner mark carries the view-transition-name:
+   index.html has both marks in the DOM at once, and two elements
+   sharing one name is invalid, so the hero doesn't participate in
+   the cross-page morph (there's no equivalent hero on the other
+   pages anyway). */
 
-.presentations-container {
-  max-width: 900px;
-  margin: 2rem auto;
-  padding: 0 1rem;
-  color: #000;
+.brand {
+  z-index: 25;
 }
 
-.presentations-title {
-  font-family: "Quosm-Bold";
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
-  text-align: center;
-}
-
-.video-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 2rem;
-  margin-top: 2rem;
-}
-
-.video-item {
-  background: #f9f9f9;
-  border-radius: 8px;
-  padding: 1rem;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.video-wrapper {
-  position: relative;
-  padding-bottom: 56.25%; /* 16:9 aspect ratio */
-  height: 0;
-  overflow: hidden;
-}
-
-.video-wrapper iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
+.brand-svg {
+  display: block;
   width: 100%;
-  height: 100%;
-  border: none;
+  height: auto;
 }
 
-.video-title {
-  font-family: "Quosm-Bold";
-  margin: 1rem 0 0.5rem;
-  font-size: 1.1rem;
+/* corner (scientific_projects / conference_presentations /
+   beyond_academia / contact) */
+
+.brand--corner {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 300px;
+  z-index: 25;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+  view-transition-name: brand-mark;
 }
 
-.video-description {
-  font-size: 0.9rem;
-  color: #666;
+.brand--corner.is-visible {
+  opacity: 1;
+  pointer-events: auto;
 }
 
-@media (max-width: 768px) {
-  .presentations-container {
-    margin: 1rem auto;
+.corner-portrait-link {
+  cursor: pointer;
+}
+
+.corner-portrait-outline {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 88.75px;
+  transition: stroke 0.2s ease, stroke-width 0.2s ease;
+}
+
+.corner-portrait-link:hover .corner-portrait-outline,
+.corner-portrait-link:focus-visible .corner-portrait-outline {
+  stroke: #000;
+  stroke-width: 100px;
+}
+
+.corner-mail-link {
+  cursor: pointer;
+}
+
+.corner-mail-bg {
+  fill: #fff;
+  transition: fill 0.15s ease;
+}
+
+.corner-mail-link:hover .corner-mail-bg,
+.corner-mail-link:focus-visible .corner-mail-bg {
+  fill: var(--yellow);
+}
+
+@media (max-width: 640px) {
+  .brand--corner {
+    top: 168px;
+    width: 210px;
   }
-  
-  .video-grid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
 }
 
-/* RESEARCH */
+/* ---------- footer copyright ---------- */
 
-.research-container {
-      max-width: 800px;
-      margin: 2rem auto;
-      padding: 0 1rem;
-      color: #000;
-}
-
-.research_vis img {
-  max-width: 200px;  /* prevents growing too large */
-  height: auto;      /* keeps aspect ratio */
-  margin-top: 0; /* lift the visual upwards */
-}
-
-.research-title {
-  font-family: "Quosm-Bold";
-  color: rgb(13, 131, 170);
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
+.site-footer {
+  position: absolute;
+  bottom: 22px;
+  left: 0;
+  right: 0;
   text-align: center;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  color: rgba(5, 62, 118, 0.45);
+  pointer-events: none;
 }
 
-.citation-list {
-  list-style: none;
+/* ---------- highlighter text utility ---------- */
+/* wraps inline text with a per-line white "highlighter" box,
+   matching the marker-strip look in the designs */
+
+.highlight {
+  background: #fff;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  padding: 0.05em 0.3em;
 }
 
-.citation-item {
-  margin-bottom: 1.5rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid #eee;
+.highlight--yellow {
+  background: var(--yellow);
 }
 
-.citation-text {
-  font-size: 0.9rem;
-  line-height: 1.4;
-  margin-bottom: 0.5rem;
+.highlight--green {
+  background: rgb(8, 211, 123);
 }
 
-.citation-link {
-  color: #d9246f;
-  text-decoration: none;
-  font-size: 0.8rem;
+.highlight--blue {
+  background: var(--blue-accent);
 }
 
-.citation-link:hover {
-  text-decoration: underline;
+/* ---------- visually-hidden (skip links / a11y) ---------- */
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
 }
 
-@media (max-width: 768px) {
-  .research-container {
-    margin: 1rem auto;
+/* ---------- reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
   }
-  
-  .research-title {
-    font-size: 1.5rem;
-  }
-}
-
-/* WORKSHOPS */
-  
-.crowd img {
-  width: 75%;        /* desktop: takes 60% of screen */
-  max-width: 500px;  /* prevents growing too large */
-  height: auto;      /* keeps aspect ratio */
-  margin-top: -2rem; /* lift the visual upwards */
-}
-
-
-/* CONNECT */
-.connect img {
-  width: 50%;        /* desktop: takes 60% of screen */
-  height: auto;      /* keeps aspect ratio */
-  margin-top: -2rem; /* lift the visual upwards */
-}
-
-.connect-container {
-  max-width: 600px;
-  margin: 2rem auto;
-  padding: 0 1rem;
-  color: #000;
-  text-align: center;
-}
-
-.connect-title {
-  font-family: "Quosm";
-  color: rgb(13, 131, 170);
-  font-size: 2rem;
-  margin-bottom: 2rem;
-  text-transform: lowercase;
-}
-
-.social-links {
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  flex-wrap: wrap;
-  margin-top: 2rem;
-}
-
-.social-link {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-decoration: none;
-  color: #000;
-  transition: transform 0.2s;
-  width: 80px;
-}
-
-.social-link:hover {
-  transform: translateY(-5px);
-}
-
-.social-icon {
-  width: 60px;
-  height: 60px;
-  margin-bottom: 0.5rem;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.8rem;
-  background-color: #f0f0f0;
-}
-
-.social-name {
-  font-size: 0.8rem;
-  text-transform: lowercase;
-}
-
-@media (max-width: 768px) {
-  .connect-container {
-    margin: 1rem auto;
-  }
-  
-  .social-links {
-    gap: 1.5rem;
-  }
-  
-  .social-icon {
-    width: 50px;
-    height: 50px;
-    font-size: 1.5rem;
-  }
-}
-
-/* SVG hover effects */
-#GitHub_balloon:hover,
-#Scholar_balloon:hover,
-#LinkedIn_balloon:hover,
-#BlueSky_balloon:hover,
-#Youtube_balloon:hover {
-    cursor: pointer;
 }

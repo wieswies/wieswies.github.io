@@ -1,53 +1,1456 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>wies ruyters</title>
-  <link rel="stylesheet" href="css/styles.css">
-  <link rel="icon" type="image/png" href="./vis/favicon.png"/> 
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wies Ruyters</title>
+<meta name="description" content="Wies Ruyters — PhD candidate researching multimodal political communication.">
+<link rel="icon" type="image/png" sizes="32x32" href="vis/favicon-32.png?v=2">
+<link rel="icon" type="image/png" sizes="512x512" href="vis/favicon-512.png?v=2">
+<link rel="apple-touch-icon" href="vis/favicon-180.png?v=2">
+<link rel="stylesheet" href="css/fonts.css">
+<link rel="stylesheet" href="css/styles.css?v=5">
+<style>
+  /* ============ opening ============ */
+
+  #opening .hero {
+    position: relative;
+    height: 100vh;
+    width: auto;
+    aspect-ratio: 1440 / 1001;
+    max-width: 100vw;
+    margin: 0 auto;
+  }
+
+  #opening .hero-brand {
+    position: absolute;
+    left: 2%;
+    bottom: 0;
+    width: 65%;
+    z-index: 2;
+    filter: drop-shadow(0 10px 26px rgba(5, 62, 118, 0.2));
+  }
+
+  #opening .hero .intro {
+    position: absolute;
+    left: 58.5%;
+    top: 38.5%;
+    width: 38.5%;
+    font-family: var(--font-mono);
+    font-size: clamp(11px, 1vw, 15px);
+    line-height: 1.65;
+    text-align: right;
+  }
+
+  #opening .hero .intro .highlight {
+    display: block;
+    width: fit-content;
+    margin-left: auto;
+    white-space: nowrap;
+  }
+
+  #opening .hero .signoff {
+    margin-top: 10px;
+  }
+
+  @media (max-width: 760px) {
+    #opening .hero {
+      width: 100%;
+      height: auto;
+      min-height: 100vh;
+      box-sizing: border-box;
+      aspect-ratio: auto;
+      max-width: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+      padding: 180px 20px 24px;
+    }
+
+    #opening .hero-brand,
+    #opening .hero .intro {
+      position: static;
+      left: auto;
+      top: auto;
+      bottom: auto;
+      width: auto;
+      transform: none;
+    }
+
+    /* text first, portrait+names last; the pair is pushed down as a
+       group (margin-top: auto on the first item) to touch the bottom
+       of the screen, mirroring the desktop layout, while staying
+       close together rather than splitting apart */
+    #opening .hero .intro {
+      order: 1;
+      margin-top: auto;
+    }
+
+    #opening .hero-brand {
+      order: 2;
+      width: 85%;
+      filter: none;
+    }
+
+    #opening .hero .intro {
+      width: 100%;
+      text-align: left;
+    }
+
+    #opening .hero .intro .highlight {
+      display: inline;
+      white-space: normal;
+      margin-left: 0;
+    }
+  }
+
+  /* ============ scientific publications ============ */
+
+  .sci-intro {
+    width: min(90vw, 900px);
+    margin: 0 auto 28px;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: clamp(13px, 1.35vw, 20px);
+    line-height: 1.65;
+    color: var(--navy);
+  }
+
+  .sci-intro em {
+    font-style: italic;
+  }
+
+  .sci-intro-swipe {
+    margin-top: 10px;
+    font-size: clamp(11px, 1.05vw, 15px);
+  }
+
+  .pub-wrap {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 190px 0 40px;
+  }
+
+  .pub-panel {
+    position: relative;
+    width: min(92vw, 1150px);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .pub-scroll {
+    flex: 1;
+    min-width: 0;
+    /* hidden, not auto: horizontal movement only ever comes from the
+       < / > buttons (scrollBy), never from a drag/wheel/touch swipe -
+       overflow: hidden still lets JS scroll it, it just blocks native
+       user-driven scrolling, which used to fight the page's own
+       vertical scroll */
+    overflow-x: hidden;
+    overflow-y: hidden;
+    overscroll-behavior: contain;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+  }
+
+  .pub-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .pub-track {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 5vw;
+    padding: 0 4vw;
+    min-width: max-content;
+    width: 100%;
+  }
+
+  .pub-col {
+    width: min(26vw, 360px);
+    transform: scale(1);
+    transform-origin: top center;
+    transition: transform 0.2s ease;
+  }
+
+  .pub-col.is-active {
+    transform: scale(1.04);
+  }
+
+  .pub-col.is-active .pub-box {
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.62), rgba(255, 255, 255, 0) 85%);
+  }
+
+  .col-title {
+    font-family: var(--font-sans);
+    font-weight: 900;
+    text-transform: uppercase;
+    font-size: clamp(16px, 2vw, 28px);
+    line-height: 1.15;
+    text-align: center;
+    letter-spacing: 0.01em;
+    margin: 0 auto 20px;
+  }
+
+  .col-title span {
+    display: inline;
+    background: var(--lavender);
+    color: var(--navy);
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+    padding: 0.12em 0.3em;
+  }
+
+  /* left and right columns get their own accent color, distinct
+     from the center column, on both the meta labels and the hover
+     bars in their lists */
+
+  .pub-col--left .pub-meta strong,
+  .pub-col--left .pub-meta--muted {
+    color: #a5a5d5;
+  }
+
+  .pub-col--left .pub-list li::before {
+    background: #a5a5d5;
+  }
+
+  .pub-col--right .pub-meta strong,
+  .pub-col--right .pub-meta--muted {
+    color: #c2daee;
+  }
+
+  .pub-col--right .pub-list li::before {
+    background: #c2daee;
+  }
+
+  .pub-box {
+    /* shrinks to fit its content, up to this cap - only clips (and
+       only then do the v / ^ buttons appear) once a column actually
+       has more text than fits */
+    max-height: min(50vh, 440px);
+    overflow-y: hidden;
+    overflow-x: hidden;
+    overscroll-behavior: contain;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0) 85%);
+    border-radius: 6px;
+    padding: 16px 14px 20px;
+    scrollbar-width: none;
+  }
+
+  .pub-box::-webkit-scrollbar {
+    display: none;
+  }
+
+  .pub-col-nav {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 14px;
+  }
+
+  .pub-col-nav.is-hidden {
+    display: none;
+  }
+
+  .pub-col-arrow {
+    border: none;
+    background: transparent;
+    color: var(--green);
+    font-family: var(--font-sans);
+    font-weight: 900;
+    font-size: 19px;
+    line-height: 1;
+    padding: 4px 6px;
+    cursor: pointer;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+  }
+
+  .pub-col-arrow:hover {
+    transform: scale(1.2);
+  }
+
+  .pub-col-arrow[disabled] {
+    opacity: 0.35;
+    cursor: default;
+    pointer-events: none;
+  }
+
+  .pub-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .pub-list li {
+    position: relative;
+    padding-left: 16px;
+    margin-bottom: 30px;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  .pub-list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--navy);
+    transition: width 0.15s ease;
+  }
+
+  .pub-list li:hover::before {
+    width: 7px;
+  }
+
+  .pub-list em {
+    font-style: italic;
+  }
+
+  .pub-meta {
+    margin: 8px 0 0;
+    font-size: 13px;
+  }
+
+  .pub-meta a {
+    color: var(--navy);
+  }
+
+  .pub-meta--muted {
+    color: rgba(5, 62, 118, 0.45);
+    font-style: italic;
+  }
+
+  .scroll-arrow {
+    flex: 0 0 auto;
+    width: 56px;
+    height: 56px;
+    border: none;
+    background: transparent;
+    color: var(--navy);
+    font-family: var(--font-sans);
+    font-weight: 900;
+    font-size: 28px;
+    cursor: pointer;
+    z-index: 10;
+    opacity: 1;
+    transition: transform 0.15s ease, color 0.15s ease, opacity 0.2s ease;
+  }
+
+  .scroll-arrow.is-hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .scroll-arrow:hover {
+    transform: scale(1.2);
+    color: #14110a;
+  }
+
+  @media (max-width: 760px) {
+    .pub-wrap {
+      padding: 260px 0 40px;
+    }
+
+    .sci-intro {
+      width: 100%;
+      padding: 0 20px;
+    }
+
+    .pub-panel {
+      width: 100%;
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .pub-scroll {
+      height: auto;
+      overflow: visible;
+      width: 100%;
+    }
+
+    .pub-track {
+      flex-direction: column;
+      min-width: 0;
+      padding: 0 20px;
+      gap: 40px;
+      padding-top: 0;
+    }
+
+    .pub-col {
+      width: 100%;
+      transform: none !important;
+      opacity: 1 !important;
+    }
+
+    .pub-box {
+      height: auto;
+      max-height: none;
+      overflow: visible;
+      background: none;
+      padding: 0;
+    }
+
+    .scroll-arrow,
+    .pub-col-nav {
+      display: none;
+    }
+  }
+
+  /* ============ auto-generated placeholder sections ============
+     Styling for sections that scroll.js creates on the fly for any
+     top-left menu link that doesn't have a matching section yet -
+     see js/scroll.js. Add a new <a href="#your-slug">label</a> to
+     the .menu nav below and a "coming soon" section for it appears
+     automatically, right before contact. */
+
+  .placeholder-wrap {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 24px;
+  }
+
+  .placeholder-text {
+    font-family: var(--font-mono);
+    font-size: clamp(16px, 2.4vw, 24px);
+    letter-spacing: 0.04em;
+    color: var(--navy);
+    background: rgba(255, 255, 255, 0.75);
+    padding: 0.4em 0.7em;
+  }
+
+  @media (max-width: 760px) {
+    .placeholder-wrap {
+      height: auto;
+      min-height: 100vh;
+      padding: 260px 20px 40px;
+    }
+  }
+
+  /* ============ conference presentations ============ */
+
+  #conference-presentations {
+    position: relative;
+  }
+
+  /* pale dotted world map, confined to this section */
+  .conf-globe-bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-image: url("vis/conference_globe_background.png");
+    background-repeat: no-repeat;
+    background-position: center 18%;
+    background-size: min(1500px, 140%) auto;
+    opacity: 0.85;
+    pointer-events: none;
+  }
+
+  .conf-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 230px 4vw 100px;
+  }
+
+  .conf-panel {
+    width: min(92vw, 1180px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .conf-intro {
+    width: min(90vw, 900px);
+    margin: 0 auto 22px;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: clamp(13px, 1.35vw, 20px);
+    line-height: 1.65;
+    color: var(--navy);
+  }
+
+  .conf-intro em {
+    font-style: italic;
+  }
+
+  .conf-intro-swipe {
+    margin-top: 10px;
+    font-size: clamp(11px, 1.05vw, 15px);
+  }
+
+  .conf-hint {
+    margin: 0 0 22px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    color: var(--navy);
+    background: rgba(255, 255, 255, 0.85);
+    padding: 4px 12px;
+  }
+
+  .conf-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  .conf-row-inner {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .conf-tag {
+    flex: 0 0 auto;
+    width: clamp(70px, 7vw, 92px);
+    margin: 0;
+    background: var(--lavender);
+    color: var(--navy);
+    font-family: var(--font-sans);
+    font-weight: 900;
+    font-size: clamp(13px, 1.3vw, 18px);
+    letter-spacing: 0.02em;
+    text-align: center;
+    padding: 10px 6px;
+    align-self: flex-start;
+  }
+
+  .conf-row--lg .conf-entries-frame {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.15));
+    border-radius: 6px;
+    padding: 14px 34px 18px 16px;
+  }
+
+  .conf-row--sm .conf-entries-frame {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    padding: 6px 34px 6px 4px;
+  }
+
+  .conf-entries {
+    display: flex;
+    gap: 16px;
+    /* hidden, not auto: horizontal movement only ever comes from a
+       row's own < / > buttons (scrollBy), never a drag/wheel/touch
+       swipe - that swipe used to get mistaken for the page's own
+       vertical scroll and swallow it */
+    overflow-x: hidden;
+    overscroll-behavior: contain;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+  }
+
+  .conf-entries::-webkit-scrollbar {
+    display: none;
+  }
+
+  .conf-row-nav {
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    z-index: 2;
+  }
+
+  .conf-row-nav.is-hidden {
+    display: none;
+  }
+
+  .conf-row-arrow {
+    border: none;
+    background: transparent;
+    color: var(--navy);
+    font-family: var(--font-sans);
+    font-weight: 900;
+    font-size: 15px;
+    line-height: 1;
+    padding: 3px 5px;
+    cursor: pointer;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+  }
+
+  .conf-row-arrow:hover {
+    transform: scale(1.25);
+  }
+
+  .conf-row-arrow[disabled] {
+    opacity: 0.3;
+    cursor: default;
+    pointer-events: none;
+  }
+
+  .conf-entry {
+    flex: 0 0 auto;
+    width: clamp(190px, 15.5vw, 250px);
+    position: relative;
+    padding-left: 14px;
+  }
+
+  .conf-entry::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 2px;
+    bottom: 2px;
+    width: 3px;
+    background: var(--navy);
+    transition: width 0.15s ease;
+  }
+
+  .conf-entry:hover::before {
+    width: 7px;
+  }
+
+  .conf-entry--spacer {
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .conf-entry--spacer::before {
+    display: none;
+  }
+
+  .entry-date {
+    margin: 0 0 4px;
+    font-family: var(--font-mono);
+    font-style: italic;
+    font-size: 12.5px;
+    color: var(--navy-soft);
+  }
+
+  .entry-location {
+    margin: 0 0 6px;
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  .entry-desc {
+    margin: 0 0 10px;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .entry-link {
+    display: block;
+    width: fit-content;
+    max-width: 100%;
+    font-family: var(--font-mono);
+    font-style: italic;
+    font-size: 12.5px;
+    text-decoration: none;
+    padding: 2px 7px;
+    margin-bottom: 5px;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+
+  .entry-link--youtube {
+    background: var(--yellow);
+    color: var(--navy);
+  }
+
+  .entry-link--youtube:hover,
+  .entry-link--youtube:focus-visible {
+    background: var(--navy);
+    color: var(--yellow);
+  }
+
+  .entry-link--pdf {
+    background: rgb(8, 211, 123);
+    color: var(--navy);
+  }
+
+  .entry-link--pdf:hover,
+  .entry-link--pdf:focus-visible {
+    background: var(--navy);
+    color: rgb(8, 211, 123);
+  }
+
+  @media (max-width: 760px) {
+    .conf-globe-bg {
+      background-position: center 10%;
+      background-size: 220% auto;
+    }
+
+    .conf-page {
+      padding: 300px 5vw 60px;
+    }
+
+    .conf-list {
+      gap: 30px;
+    }
+
+    .conf-row-inner {
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .conf-tag {
+      width: fit-content;
+    }
+
+    .conf-row--lg .conf-entries-frame,
+    .conf-row--sm .conf-entries-frame {
+      width: 100%;
+      padding: 10px 30px 10px 4px;
+    }
+
+    /* one presentation block per box on mobile: entries take the
+       full row width, paged one at a time with the < > buttons */
+    .conf-entry {
+      width: 100%;
+    }
+
+    .conf-row-nav {
+      right: 2px;
+    }
+  }
+
+  /* ============ beyond academia ============ */
+
+  #beyond-academia .beyond-hero {
+    position: relative;
+    height: 100vh;
+    width: auto;
+    aspect-ratio: 1440 / 1001;
+    max-width: 100vw;
+    margin: 0 auto;
+  }
+
+  /* static visuals + labels + text, no hover/interaction */
+
+  .beyond-photo {
+    position: absolute;
+    left: 28.4%;
+    top: 13.7%;
+    width: 16.2%;
+    z-index: 2;
+  }
+
+  .beyond-photo img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .beyond-title {
+    position: absolute;
+    width: fit-content;
+    max-width: 60vw;
+    text-align: center;
+    font-family: var(--font-sans);
+    font-weight: 900;
+    line-height: 1.08;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    font-size: clamp(18px, 2.9vw, 42px);
+    padding: 0.18em 0.28em;
+    z-index: 3;
+  }
+
+  .beyond-title--perks {
+    left: 16.4%;
+    top: 36.5%;
+    background: rgb(8, 211, 123);
+    color: #fff;
+  }
+
+  .beyond-title--polarization {
+    left: 60%;
+    top: 64%;
+    background: rgb(243, 28, 98);
+    color: var(--navy);
+  }
+
+  .beyond-copy {
+    position: absolute;
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: clamp(11px, 1.05vw, 16px);
+    line-height: 1.55;
+  }
+
+  .beyond-copy .highlight {
+    display: block;
+    width: fit-content;
+    white-space: nowrap;
+  }
+
+  .beyond-copy--perks {
+    left: 46%;
+    top: 28.5%;
+    width: 39%;
+  }
+
+  .beyond-copy--polarization {
+    left: 18.3%;
+    top: 57.5%;
+    width: 42.1%;
+    text-align: right;
+  }
+
+  .beyond-copy--polarization .highlight {
+    margin-left: auto;
+  }
+
+  .beyond-crowd {
+    position: absolute;
+    left: 60.5%;
+    top: 58.9%;
+    width: 20.1%;
+    z-index: 1;
+  }
+
+  .beyond-crowd img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .beyond-copy--polarization a {
+    color: var(--navy);
+    font-weight: 700;
+    text-decoration: underline;
+  }
+
+  @media (max-width: 900px) {
+    #beyond-academia .beyond-hero {
+      width: 100%;
+      height: auto;
+      aspect-ratio: auto;
+      max-width: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 300px 20px 20px;
+    }
+
+    .beyond-photo,
+    .beyond-title,
+    .beyond-copy,
+    .beyond-crowd {
+      position: static;
+      left: auto;
+      top: auto;
+      width: auto;
+    }
+
+    .beyond-photo {
+      width: min(60vw, 280px);
+    }
+
+    .beyond-title {
+      width: fit-content;
+      max-width: 100%;
+      text-align: center;
+    }
+
+    .beyond-title--perks {
+      margin-top: -34px;
+    }
+
+    .beyond-copy {
+      width: 100%;
+      max-width: 480px;
+      text-align: center !important;
+      margin-top: -2px;
+    }
+
+    .beyond-copy .highlight {
+      display: inline;
+      white-space: normal;
+      margin-left: 0;
+    }
+
+    .beyond-crowd {
+      width: min(70vw, 340px);
+      margin-top: 6px;
+    }
+
+    .beyond-title--polarization {
+      margin-top: -34px;
+    }
+  }
+
+  /* ============ contact ============ */
+
+  #contact .contact-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 210px 4vw 60px;
+  }
+
+  /* the contour + all five balloons are baked into one image now
+     (vis/contour_balloons.svg, exported already laid out as a halo),
+     so there's no more separate per-balloon positioning to keep in
+     sync - just transparent hit-regions placed on top at the same
+     percentages the image itself uses, which is also why this scales
+     cleanly to mobile without a second set of positions. */
+  .contour-halo {
+    position: relative;
+    width: min(84vw, 820px);
+    aspect-ratio: 954 / 822;
+    margin: 0 auto;
+  }
+
+  .contour-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  /*
+    No CV file on the site yet. To wire this up: drop a PDF into the
+    /downloads folder (e.g. downloads/CV-wies-ruyters.pdf), then set
+    this link's href to it - the `download` attribute makes it save
+    instead of navigating.
+  */
+  .cv-hit {
+    position: absolute;
+    left: 46.2%;
+    top: 43.8%;
+    width: 30.5%;
+    height: 8.2%;
+    cursor: pointer;
+  }
+
+  .social-balloon {
+    position: absolute;
+    cursor: pointer;
+  }
+
+  .social-balloon:hover,
+  .social-balloon:focus-visible {
+    filter: brightness(1.06);
+  }
+
+  .cv-hit:focus-visible,
+  .social-balloon:focus-visible {
+    outline: 2px dashed var(--navy);
+    outline-offset: 3px;
+  }
+
+  .social-balloon--linkedin {
+    left: 41.2%;
+    top: 0.9%;
+    width: 22.9%;
+    height: 20.1%;
+  }
+
+  .social-balloon--github {
+    left: 10%;
+    top: 24.5%;
+    width: 21.1%;
+    height: 20.1%;
+  }
+
+  .social-balloon--youtube {
+    left: 74.4%;
+    top: 22.8%;
+    width: 24.7%;
+    height: 22.1%;
+    cursor: default;
+    /* no youtube URL yet - see the HTML comment above this element */
+  }
+
+  .social-balloon--scholar {
+    left: 0.6%;
+    top: 62.9%;
+    width: 25.1%;
+    height: 21.9%;
+  }
+
+  .social-balloon--bluesky {
+    left: 71.3%;
+    top: 60.8%;
+    width: 28%;
+    height: 24.2%;
+  }
+
+  @media (max-width: 900px) {
+    #contact .contact-page {
+      min-height: 0;
+      justify-content: flex-start;
+      padding: 300px 20px 30px;
+    }
+
+    /* the halo uses the same percentages at every width - it's one
+       image, so it just scales down as a whole with the container */
+    .contour-halo {
+      width: min(90vw, 380px);
+    }
+  }
+</style>
 </head>
 <body>
+  <div class="gradient-bg" aria-hidden="true"></div>
 
-  <header class="header">
-    <div class="header_title"> 
-      <a href="">wies ruyters</a>
-      </div>
-    <nav>
-      <ul class="nav_links">
-        <li><a href="/research.html">research</a></li>
-        <!-- <li><a href="/presentations.html">presentations</a></li> -->
-        <li><a href="/workshops.html">workshops</a></li>
-        <li><a href="/connect.html">connect</a></li>
-      </ul>
-    </nav>
-  </header>
+  <nav class="menu" aria-label="Site sections">
+    <a href="#scientific-publications">scientific projects</a>
+    <a href="#conference-presentations">conference presentations</a>
+    <a href="#beyond-academia">beyond academia</a>
+    <a href="#contact">contact</a>
+  </nav>
 
-<main>
-  <div class="home_content">
-    <div class="home_vis">
-      <img 
-        src="./vis/mirror_of_interests.svg"
-        alt="mirror_of_interests" />
-    </div>
-    <div class="bio">
-      <p>
-        I'm a data scientist with a particular interest in politics, media and communication. 
-        In my PhD, pursued at <a href="https://www.wur.nl/nl/personen/wies-ruyters.htm">Wageningen University and Research</a>,
-        I study the interplay of multimodal communication, news, politics and media effects.
-        <br>
-        I'm a creative mind with a passion for translating complicated matter to comprehensive
-        language. I have experience in making interactive presentations in which exchanging ideas,
-        critical reflection, and a good dose of humor are central. I also host workshops on 
-        various topics related to my research.
-        <br>
-        <a href="connect">Let's get in touch</a>.
-      </p>
-    </div>
+  <div class="brand brand--corner">
+    <svg class="brand-svg" viewBox="0 0 441 231" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img" aria-label="Wies Ruyters">
+      <g transform="matrix(1,0,0,1,-10720.1,-1190.32)">
+        <g transform="matrix(1.40624,0,0,1.30251,9694.17,1224.42)">
+          <g id="wies" transform="matrix(0.0509494,0.0138131,-0.00445694,0.0191619,744.146,-12.5597)">
+            <g transform="matrix(13.537,0,0,38.8598,0,0)">
+              <rect x="0" y="-18.3" width="279.7" height="102.45" style="fill:rgb(165,165,213);"/>
+            </g>
+            <g transform="matrix(13.537,0,0,38.8598,0,0)">
+              <text x="52.5px" y="56.7px" style="font-family:'AvenirNext-Heavy', 'Avenir Next', sans-serif;font-weight:900;font-size:50px;fill:rgb(5,62,118);">W<tspan x="111.35px 134.95px 170.1px " y="56.7px 56.7px 56.7px ">IES</tspan></text>
+            </g>
+          </g>
+        </g>
+        <g transform="matrix(1.40624,0,0,1.30251,9694.17,1224.42)">
+          <g id="ruyters" transform="matrix(0.0533986,-0.00893918,0.00280396,0.0195235,778.211,87.1074)">
+            <g transform="matrix(13.1599,0,0,38.8598,0,0)">
+              <rect x="0" y="-18.3" width="363.925" height="102.45" style="fill:rgb(165,165,213);"/>
+            </g>
+            <g transform="matrix(13.1599,0,0,38.8598,0,0)">
+              <text x="52.5px" y="56.7px" style="font-family:'AvenirNext-Heavy', 'Avenir Next', sans-serif;font-weight:900;font-size:50px;fill:rgb(5,62,118);">R<tspan x="93.2px 136.95px 178.85px 213.85px 249px 289.7px " y="56.7px 56.7px 56.7px 56.7px 56.7px 56.7px ">UYTERS</tspan></text>
+            </g>
+          </g>
+        </g>
+        <g transform="matrix(1.40624,0,0,1.30251,9694.17,1224.42)">
+          <a class="corner-portrait-link" xlink:href="#opening" aria-label="Go to homepage">
+            <g id="portrait" transform="matrix(0.0400641,0,0,0.0432546,905.849,-4.28418)">
+              <clipPath id="cornerClipIdx1"><rect x="242.942" y="179.433" width="1122.06" height="1394.23"/></clipPath>
+              <g clip-path="url(#cornerClipIdx1)">
+                <clipPath id="cornerClipIdx2"><path d="M504.629,534.786C538.421,441.647 600.652,374.467 691.819,321.792C782.986,269.117 936.48,317.662 1016.3,350.095C1081.26,376.487 1123.71,449.794 1139.66,502.619C1155.62,555.445 1147.23,676.546 1166.68,688.485C1196.26,706.645 1217.63,699.835 1216.56,717.224C1215.64,732.251 1202.52,806.496 1182.26,850.365C1167.74,881.807 1132.15,883.952 1132.35,910.891C1132.9,982.987 1093.24,999.527 1105.54,1020.31C1182.63,1150.57 1202.63,1188.27 1182.55,1235.82C1173.28,1257.78 1132.42,1253.51 1153.29,1278.2C1175.62,1304.65 1297.14,1338.98 1330.09,1389.44C1363.04,1439.91 1365,1573.66 1365,1573.66L242.942,1573.66C242.942,1573.66 240.348,1495.72 256.699,1461.96C273.618,1427.02 334.244,1412.94 350.68,1372.31C375.964,1309.81 385.898,1159.29 417.202,1101.12C439.829,1059.08 530.304,1036.19 536.996,999.81C543.687,963.43 479.944,885.581 471.534,830C460.223,755.244 470.836,627.925 504.629,534.786Z"/></clipPath>
+                <g clip-path="url(#cornerClipIdx2)">
+                  <g transform="matrix(17.7495,-0,-0,17.7495,-4399.87,-506.355)">
+                    <image xlink:href="data:image/jpeg;base64,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" x="261.574" y="45.344" width="64" height="72"/>
+                  </g>
+                </g>
+                <path class="corner-portrait-outline" d="M504.629,534.786C538.421,441.647 600.652,374.467 691.819,321.792C782.986,269.117 936.48,317.662 1016.3,350.095C1081.26,376.487 1123.71,449.794 1139.66,502.619C1155.62,555.445 1147.23,676.546 1166.68,688.485C1196.26,706.645 1217.63,699.835 1216.56,717.224C1215.64,732.251 1202.52,806.496 1182.26,850.365C1167.74,881.807 1132.15,883.952 1132.35,910.891C1132.9,982.987 1093.24,999.527 1105.54,1020.31C1182.63,1150.57 1202.63,1188.27 1182.55,1235.82C1173.28,1257.78 1132.42,1253.51 1153.29,1278.2C1175.62,1304.65 1297.14,1338.98 1330.09,1389.44C1363.04,1439.91 1365,1573.66 1365,1573.66L242.942,1573.66C242.942,1573.66 240.348,1495.72 256.699,1461.96C273.618,1427.02 334.244,1412.94 350.68,1372.31C375.964,1309.81 385.898,1159.29 417.202,1101.12C439.829,1059.08 530.304,1036.19 536.996,999.81C543.687,963.43 479.944,885.581 471.534,830C460.223,755.244 470.836,627.925 504.629,534.786Z"/>
+              </g>
+            </g>
+          </a>
+        </g>
+        <g transform="matrix(1.40624,0,0,1.30251,9694.17,1224.42)">
+          <a class="corner-mail-link" xlink:href="mailto:wies.ruyters@wur.nl" aria-label="Email Wies Ruyters">
+            <g id="mail" transform="matrix(0.0487022,0,1.0842e-19,0.00744477,742.626,62.3573)">
+              <g transform="matrix(14.6013,0,0,103.126,0,0)">
+                <rect class="corner-mail-bg" x="25.613" y="-5.181" width="330.046" height="28.125"/>
+              </g>
+              <g transform="matrix(14.6013,0,0,103.126,0,0)">
+                <text x="25.613px" y="17.5px" style="font-family:'AndaleMono', 'Andale Mono', monospace;font-size:25px;">w<tspan x="43.115px 60.618px 78.12px 95.623px 113.125px 130.627px 148.13px 165.632px 183.135px 200.637px 218.14px 235.642px 253.145px 270.647px 288.149px 305.652px 323.154px 340.657px " y="17.5px 17.5px 17.5px 17.5px 17.5px 17.5px 17.5px 17.5px 17.5px 17.5px 17.5px 17.5px 17.5px 17.5px 17.5px 17.5px 17.5px 17.5px ">ies.ruyters@wur.nl</tspan></text>
+              </g>
+            </g>
+          </a>
+        </g>
+      </g>
+    </svg>
   </div>
 
-</main>
+  <main class="scroll-container">
 
+    <section id="opening" class="section" data-angle="205">
+      <div class="hero">
+        <div class="brand hero-brand">
+          <img class="brand-svg" src="vis/vis_portrait+wies-ruyters.svg" alt="Wies Ruyters">
+        </div>
 
+        <p class="intro">
+          <span class="highlight">Hello! I am Wies and I study</span>
+          <span class="highlight">political communication in the</span>
+          <span class="highlight">multimodality, where visuals</span>
+          <span class="highlight">and text combined shape the</span>
+          <span class="highlight">meaning of identity and</span>
+          <span class="highlight">ideology. My favorite research</span>
+          <span class="highlight">methods are computational, but</span>
+          <span class="highlight">I am currently exploring other</span>
+          <span class="highlight">methods as well. Besides my</span>
+          <span class="highlight">academic work, I also host</span>
+          <span class="highlight">workshops on high schools</span>
+          <span class="highlight">about polarisation and media</span>
+          <span class="highlight">literacy, and I occasionally</span>
+          <span class="highlight">visualize my projects on my</span>
+          <span class="highlight">website.</span>
+          <span class="highlight signoff">Have a nice scroll :)</span>
+        </p>
+      </div>
+    </section>
+
+    <section id="scientific-publications" class="section" data-angle="130">
+      <main class="pub-wrap">
+        <div class="sci-intro">
+          <p>
+            Within my PhD, I combine theories and insights from
+            <em class="highlight highlight--green">political communication</em> with
+            methods and best practices from
+            <em class="highlight highlight--green">data science.</em>
+          </p>
+          <p class="sci-intro-swipe">
+            Use <em class="highlight">&lt; &gt;</em> to explore research areas that my work relates to, and <em class="highlight">∨ ∧</em> to browse all projects within each area.
+          </p>
+        </div>
+
+        <div class="pub-panel">
+          <button class="scroll-arrow scroll-arrow--left" type="button" aria-label="Scroll left">&lt;</button>
+
+          <div class="pub-scroll" data-gradient-scroll="x">
+            <div class="pub-track">
+              <section class="pub-col pub-col--left">
+                <h2 class="col-title"><span>computational</span><br><span>methods</span></h2>
+                <div class="pub-box">
+                  <ul class="pub-list">
+                    <li>
+                      <p><strong>Wies Ruyters</strong>, Susan Vermeer, Sanne Kruikemeier &amp; Rens Vliegenthart (2025)<br>
+                      <em>Embedding, embedding on the wall; who is the most prominent politician of them all? Exploring automated methods to study multimodal political news coverage</em></p>
+                      <p class="pub-meta"><strong>Published in:</strong><br>Communication Methods and Measures<br>DOI: <a href="https://doi.org/10.1080/19312458.2025.2558736" target="_blank" rel="noopener">10.1080/19312458.2025.2558736</a></p>
+                    </li>
+                    <li>
+                      <p>Mariska van Dam, <strong>Wies Ruyters</strong><br>
+                      <em>Connected Conservatives: A network study on far right discourse on X.com (running title)</em></p>
+                      <p class="pub-meta pub-meta--muted">Work in progress</p>
+                    </li>
+                  </ul>
+                </div>
+                <div class="pub-col-nav">
+                  <button class="pub-col-arrow pub-col-arrow--down" type="button" aria-label="Scroll down within computational methods">v</button>
+                  <button class="pub-col-arrow pub-col-arrow--up" type="button" aria-label="Scroll up within computational methods">^</button>
+                </div>
+              </section>
+
+              <section class="pub-col pub-col--mid">
+                <h2 class="col-title"><span>multimodal</span><br><span>communication</span></h2>
+                <div class="pub-box">
+                  <ul class="pub-list">
+                    <li>
+                      <p><strong>Wies Ruyters</strong>, Susan Vermeer &amp; Rens Vliegenthart<br>
+                      <em>Modality matters: the effects of monomodal versus multimodal news coverage on party leader recall</em></p>
+                      <p class="pub-meta"><strong>Forthcoming:</strong><br>Oxford Handbook of Personality Politics<br>Section 4, Media and personality politics</p>
+                    </li>
+                    <li>
+                      <p><strong>Wies Ruyters</strong>, Susan Vermeer, Sanne Kruikemeier &amp; Rens Vliegenthart<br>
+                      <em>The Populist Gaze? A multimodal analysis of the convergence of politicians' Instagram communication and their news portrayals (running title)</em></p>
+                      <p class="pub-meta pub-meta--muted">Work in progress</p>
+                    </li>
+                  </ul>
+                </div>
+                <div class="pub-col-nav">
+                  <button class="pub-col-arrow pub-col-arrow--down" type="button" aria-label="Scroll down within multimodal communication">v</button>
+                  <button class="pub-col-arrow pub-col-arrow--up" type="button" aria-label="Scroll up within multimodal communication">^</button>
+                </div>
+              </section>
+
+              <section class="pub-col pub-col--right">
+                <h2 class="col-title"><span>identity - ideology</span><br><span>perceptions</span></h2>
+                <div class="pub-box">
+                  <ul class="pub-list">
+                    <li>
+                      <p><strong>Wies Ruyters</strong><br>
+                      <em>Wingwomen: How left-progressive and right-conservative leaders perform femininity on Instagram (running title)</em></p>
+                      <p class="pub-meta pub-meta--muted">Work in progress</p>
+                    </li>
+                  </ul>
+                </div>
+                <div class="pub-col-nav">
+                  <button class="pub-col-arrow pub-col-arrow--down" type="button" aria-label="Scroll down within identity - ideology perceptions">v</button>
+                  <button class="pub-col-arrow pub-col-arrow--up" type="button" aria-label="Scroll up within identity - ideology perceptions">^</button>
+                </div>
+              </section>
+            </div>
+          </div>
+
+          <button class="scroll-arrow scroll-arrow--right" type="button" aria-label="Scroll right">&gt;</button>
+        </div>
+      </main>
+    </section>
+
+    <section id="conference-presentations" class="section" data-angle="170">
+      <div class="conf-globe-bg" aria-hidden="true"></div>
+
+      <!--
+        ============================================================
+        HOW TO EDIT THIS SECTION
+        ============================================================
+        Each conference has its own row (a <section class="conf-row">),
+        and each row holds one or more <article class="conf-entry">
+        blocks - one per talk/panel. To add a presentation, copy an
+        existing <article class="conf-entry">...</article> and edit:
+
+          - entry-date / entry-location / entry-desc: plain text
+          - the "View presentation on Youtube" link: set its href to
+            the full YouTube URL, e.g.
+              <a class="entry-link entry-link--youtube"
+                 href="https://www.youtube.com/watch?v=XXXXXXXXXXX"
+                 target="_blank" rel="noopener">View presentation on Youtube</a>
+          - the "Download .pdf" link: first drop the file into the
+            /downloads folder next to this HTML file, then point the
+            href at it (the `download` attribute makes it save instead
+            of navigating), e.g.
+              <a class="entry-link entry-link--pdf"
+                 href="downloads/2026-ecpr-krakow.pdf" download>Download .pdf with notes</a>
+            See /downloads/README.md for the full step-by-step.
+
+        If neither a video nor a file exists yet for a talk, just leave
+        that <a> tag out entirely (see the Brugge/Vienna/Amsterdam/
+        Innsbrück entries below for examples with no links yet).
+
+        To add a whole new conference, copy one of the <section
+        class="conf-row ...">...</section> blocks, change the tag text
+        (e.g. "ECPR") and data-conf value, and add its entries. Rows
+        with 4+ entries scroll horizontally on their own; the section
+        itself just grows taller as the list grows.
+        ============================================================
+      -->
+
+      <main class="conf-page">
+        <div class="conf-panel">
+          <div class="conf-intro">
+            <p>
+              Every academic conference presentation brings a
+              <em class="highlight highlight--green">chance to rethink my work</em> and communicate it in a way that
+              <em class="highlight highlight--blue">narrates, inspires, and provokes</em> -
+              while being <em class="highlight highlight--green">fun</em> and <em class="highlight highlight--green">relatable</em>.
+            </p>
+            <p class="conf-intro-swipe">
+              Use <em class="highlight">&lt; &gt;</em> to page through a conference's presentations, and scroll down to move through conferences.
+            </p>
+          </div>
+
+          <p class="conf-hint">&lsaquo; newer &nbsp;&nbsp;&nbsp; older &rsaquo;</p>
+
+          <div class="conf-list">
+            <section class="conf-row conf-row--lg" data-conf="ecpr">
+              <div class="conf-row-inner">
+                <h2 class="conf-tag">ECPR</h2>
+                <div class="conf-entries-frame">
+                  <div class="conf-entries" data-conf-entries>
+                    <article class="conf-entry">
+                      <p class="entry-date">Thursday, September 8th 2026</p>
+                      <p class="entry-location">Kráków, Poland</p>
+                      <p class="entry-desc">Panel: Comparing political networks</p>
+                      <a class="entry-link entry-link--youtube" href="https://www.youtube.com/watch?v=XXXXXXXXXXX" target="_blank" rel="noopener">View presentation on Youtube</a>
+                      <a class="entry-link entry-link--pdf" href="downloads/2026-ecpr-krakow-comparing-political-networks.pdf" download>Download .pdf with notes</a>
+                    </article>
+                    <article class="conf-entry">
+                      <p class="entry-date">Tuesday, September 8th 2026</p>
+                      <p class="entry-location">Kráków, Poland</p>
+                      <p class="entry-desc">Panel: War, conflict and information politics</p>
+                      <a class="entry-link entry-link--youtube" href="https://www.youtube.com/watch?v=XXXXXXXXXXX" target="_blank" rel="noopener">View presentation on Youtube</a>
+                      <a class="entry-link entry-link--pdf" href="downloads/2026-ecpr-krakow-war-conflict-information-politics.pdf" download>Download .pdf with notes</a>
+                    </article>
+                  </div>
+                  <div class="conf-row-nav">
+                    <button class="conf-row-arrow conf-row-arrow--next" type="button" aria-label="Show older ECPR presentations">&gt;</button>
+                    <button class="conf-row-arrow conf-row-arrow--prev" type="button" aria-label="Show newer ECPR presentations">&lt;</button>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section class="conf-row conf-row--lg" data-conf="ica">
+              <div class="conf-row-inner">
+                <h2 class="conf-tag">ICA</h2>
+                <div class="conf-entries-frame">
+                  <div class="conf-entries" data-conf-entries>
+                    <article class="conf-entry">
+                      <p class="entry-date">Friday, June 5th 2026</p>
+                      <p class="entry-location">Cape Town, South Africa</p>
+                      <p class="entry-desc">High Density Panel:<br>Political communication</p>
+                      <a class="entry-link entry-link--youtube" href="https://www.youtube.com/watch?v=XXXXXXXXXXX" target="_blank" rel="noopener">View 3min pitch on Youtube</a>
+                      <a class="entry-link entry-link--pdf" href="downloads/2026-ica-cape-town.pdf" download>Download .pdf</a>
+                    </article>
+                    <article class="conf-entry">
+                      <p class="entry-date">Monday, June 4th 2025</p>
+                      <p class="entry-location">Denver Colorado, USA</p>
+                      <p class="entry-desc">Pre-Conference:<br>Frames of visual transition</p>
+                      <a class="entry-link entry-link--youtube" href="https://www.youtube.com/watch?v=XXXXXXXXXXX" target="_blank" rel="noopener">View presentation on Youtube</a>
+                      <a class="entry-link entry-link--pdf" href="downloads/2025-ica-denver.pdf" download>Download .pdf with notes</a>
+                    </article>
+                  </div>
+                  <div class="conf-row-nav">
+                    <button class="conf-row-arrow conf-row-arrow--next" type="button" aria-label="Show older ICA presentations">&gt;</button>
+                    <button class="conf-row-arrow conf-row-arrow--prev" type="button" aria-label="Show newer ICA presentations">&lt;</button>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section class="conf-row conf-row--lg" data-conf="nefca">
+              <div class="conf-row-inner">
+                <h2 class="conf-tag">NEFCA</h2>
+                <div class="conf-entries-frame">
+                  <div class="conf-entries" data-conf-entries>
+                    <article class="conf-entry">
+                      <p class="entry-date">Thursday, January 29th 2026</p>
+                      <p class="entry-location">Papendal, the Netherlands</p>
+                      <p class="entry-desc">Academic poster presentation</p>
+                      <a class="entry-link entry-link--pdf" href="downloads/2026-nefca-papendal-poster.pdf" download>Download .pdf</a>
+                    </article>
+                    <article class="conf-entry">
+                      <p class="entry-date">Thursday, February 3rd 2025</p>
+                      <p class="entry-location">Brugge, Belgium</p>
+                      <p class="entry-desc">Panel:<br>News &amp; Politics</p>
+                    </article>
+                    <article class="conf-entry">
+                      <p class="entry-date">Thursday, February 1st 2026</p>
+                      <p class="entry-location">Rotterdam, the Netherlands</p>
+                      <p class="entry-desc">Panel:<br>Political communication</p>
+                      <a class="entry-link entry-link--youtube" href="https://www.youtube.com/watch?v=XXXXXXXXXXX" target="_blank" rel="noopener">View presentation on Youtube</a>
+                      <a class="entry-link entry-link--pdf" href="downloads/2026-nefca-rotterdam.pdf" download>Download .pdf with notes</a>
+                    </article>
+                  </div>
+                  <div class="conf-row-nav">
+                    <button class="conf-row-arrow conf-row-arrow--next" type="button" aria-label="Show older NEFCA presentations">&gt;</button>
+                    <button class="conf-row-arrow conf-row-arrow--prev" type="button" aria-label="Show newer NEFCA presentations">&lt;</button>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section class="conf-row conf-row--sm" data-conf="comptext">
+              <div class="conf-row-inner">
+                <h2 class="conf-tag">COMP<br>TEXT</h2>
+                <div class="conf-entries-frame">
+                  <div class="conf-entries" data-conf-entries>
+                    <div class="conf-entry conf-entry--spacer" aria-hidden="true"></div>
+                    <article class="conf-entry">
+                      <p class="entry-date">Friday, April 25th 2025</p>
+                      <p class="entry-location">Vienna, Austria</p>
+                    </article>
+                    <article class="conf-entry">
+                      <p class="entry-date">Friday, May 3rd 2024</p>
+                      <p class="entry-location">Amsterdam, the Netherlands</p>
+                    </article>
+                  </div>
+                  <div class="conf-row-nav">
+                    <button class="conf-row-arrow conf-row-arrow--next" type="button" aria-label="Show older COMP TEXT presentations">&gt;</button>
+                    <button class="conf-row-arrow conf-row-arrow--prev" type="button" aria-label="Show newer COMP TEXT presentations">&lt;</button>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section class="conf-row conf-row--sm" data-conf="ecrea">
+              <div class="conf-row-inner">
+                <h2 class="conf-tag">ECREA</h2>
+                <div class="conf-entries-frame">
+                  <div class="conf-entries" data-conf-entries>
+                    <div class="conf-entry conf-entry--spacer" aria-hidden="true"></div>
+                    <div class="conf-entry conf-entry--spacer" aria-hidden="true"></div>
+                    <article class="conf-entry">
+                      <p class="entry-date">Thursday, September 4th 2025</p>
+                      <p class="entry-location">Innsbrück, Austria</p>
+                    </article>
+                  </div>
+                  <div class="conf-row-nav">
+                    <button class="conf-row-arrow conf-row-arrow--next" type="button" aria-label="Show older ECREA presentations">&gt;</button>
+                    <button class="conf-row-arrow conf-row-arrow--prev" type="button" aria-label="Show newer ECREA presentations">&lt;</button>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </main>
+    </section>
+
+    <section id="beyond-academia" class="section" data-angle="340">
+      <div class="beyond-hero">
+        <div class="beyond-photo">
+          <img src="vis/mirror_beyond_academia.png" alt="Mirror selfie of Wies Ruyters taking a photo with a Fujifilm camera.">
+        </div>
+        <h2 class="beyond-title beyond-title--perks">Personal<br>Perks</h2>
+        <p class="beyond-copy beyond-copy--perks">
+          <span class="highlight">I live and work in the Netherlands.</span>
+          <span class="highlight">Besides being a nerd I greatly enjoy:</span>
+          <span class="highlight">going outdoors; doing sports (CrossFit,</span>
+          <span class="highlight">running, cycling); photography (I own a</span>
+          <span class="highlight">Fujifilm X100S); travelling; writing</span>
+          <span class="highlight">poetry; cooking; going out; data</span>
+          <span class="highlight">visualization; graphic design.</span>
+        </p>
+
+        <div class="beyond-crowd">
+          <img src="vis/crowd.png" alt="Line drawing of a crowd of people.">
+        </div>
+        <h2 class="beyond-title beyond-title--polarization">Polarization<br>Perspectives</h2>
+        <p class="beyond-copy beyond-copy--polarization">
+          <span class="highlight highlight--yellow">Together with my colleague and fellow PhD</span>
+          <span class="highlight highlight--yellow">Candidate Mariska van Dam, I facilitate</span>
+          <span class="highlight highlight--yellow">workshops on high schools about societal</span>
+          <span class="highlight highlight--yellow">polarization, political communication and</span>
+          <span class="highlight highlight--yellow">media literacy. We have experience with</span>
+          <span class="highlight highlight--yellow">different education levels, in different</span>
+          <span class="highlight highlight--yellow">schools across different parts of the</span>
+          <span class="highlight highlight--yellow">Netherlands. Can we challenge your students</span>
+          <span class="highlight highlight--yellow">the coming season?</span>
+          <span class="highlight highlight--yellow">Send us a message!</span><br>
+          <a href="mailto:wies.ruyters@wur.nl">wies.ruyters@wur.nl</a>
+        </p>
+      </div>
+    </section>
+
+    <section id="contact" class="section" data-angle="90">
+      <main class="contact-page">
+        <div class="contour-halo">
+          <img class="contour-img" src="vis/contour_balloons.svg" alt="A curved list of Wies Ruyters's research interests around a contour: political communication, computational methods, journalism, identity-ideology perceptions, leadership. In the middle: download CV. Around it, balloons linking to LinkedIn, GitHub, YouTube, Google Scholar and Bluesky.">
+
+          <!-- drop a PDF into /downloads (e.g. downloads/CV-wies-ruyters.pdf), then point this href at it -->
+          <a class="cv-hit" href="downloads/CV-wies-ruyters.pdf" download aria-label="Download CV"></a>
+
+          <a class="social-balloon social-balloon--linkedin" href="https://www.linkedin.com/in/wies-ruyters-5a3741134/" target="_blank" rel="noopener noreferrer" aria-label="Wies Ruyters on LinkedIn (opens in a new tab)"></a>
+
+          <a class="social-balloon social-balloon--github" href="https://github.com/wieswies" target="_blank" rel="noopener noreferrer" aria-label="Wies Ruyters on GitHub (opens in a new tab)"></a>
+
+          <!--
+            YouTube channel URL isn't live yet. Once it is, turn this into
+            a real link the same way the others work, e.g.:
+              <a class="social-balloon social-balloon--youtube"
+                 href="https://www.youtube.com/@your-channel"
+                 target="_blank" rel="noopener noreferrer"
+                 aria-label="Wies Ruyters on YouTube (opens in a new tab)"></a>
+          -->
+          <span class="social-balloon social-balloon--youtube" aria-hidden="true"></span>
+
+          <a class="social-balloon social-balloon--scholar" href="https://scholar.google.com/citations?user=jTb0bGYAAAAJ&hl=nl" target="_blank" rel="noopener noreferrer" aria-label="Wies Ruyters on Google Scholar (opens in a new tab)"></a>
+
+          <a class="social-balloon social-balloon--bluesky" href="https://bsky.app/profile/wieswies.bsky.social" target="_blank" rel="noopener noreferrer" aria-label="Wies Ruyters on Bluesky (opens in a new tab)"></a>
+        </div>
+      </main>
+      <footer class="site-footer">© wies ruyters | 2026 | github pages</footer>
+    </section>
+
+  </main>
+
+  <script src="js/gradient.js?v=2" defer></script>
+  <script src="js/scroll.js?v=3" defer></script>
+  <script src="js/publications.js?v=5" defer></script>
+  <script src="js/conference.js?v=3" defer></script>
+  <script src="js/links.js?v=1" defer></script>
 </body>
 </html>

@@ -1,0 +1,59 @@
+/*
+  Font declarations for the site.
+  Avenir Next and Andale Mono are common system fonts (macOS/Office installs).
+  We reference them via local() so machines that have them installed use the
+  real font, and fall back to close, widely-available alternatives otherwise.
+*/
+
+@font-face {
+  font-family: "Avenir Next";
+  src: local("Avenir Next Regular"), local("AvenirNext-Regular"), local("Avenir Next");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Avenir Next";
+  src: local("Avenir Next Italic"), local("AvenirNext-Italic");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Avenir Next";
+  src: local("Avenir Next Demi Bold"), local("Avenir Next Bold"), local("AvenirNext-DemiBold"), local("AvenirNext-Bold");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Avenir Next";
+  src: local("Avenir Next Demi Bold Italic"), local("Avenir Next Bold Italic"), local("AvenirNext-DemiBoldItalic"), local("AvenirNext-BoldItalic");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Avenir Next";
+  src: local("Avenir Next Heavy"), local("AvenirNext-Heavy");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Andale Mono";
+  src: local("Andale Mono"), local("AndaleMono");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --font-sans: "Avenir Next", "Avenir", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "Andale Mono", "Consolas", "Courier New", monospace;
+}

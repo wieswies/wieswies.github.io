@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scientific Publications — Wies Ruyters</title>
+<meta name="description" content="Scientific publications by Wies Ruyters on multimodal political communication.">
+<link rel="icon" type="image/png" sizes="32x32" href="vis/favicon-32.png?v=2">
+<link rel="icon" type="image/png" sizes="512x512" href="vis/favicon-512.png?v=2">
+<link rel="apple-touch-icon" href="vis/favicon-180.png?v=2">
+<link rel="stylesheet" href="css/fonts.css">
+<link rel="stylesheet" href="css/styles.css?v=5">
+<style>
+  body.page-scientific-projects {
+    --angle-base: 130deg;
+    position: relative;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  /* intro copy above the three swipeable topic columns */
+
+  .sci-intro {
+    width: min(90vw, 900px);
+    margin: 0 auto 28px;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: clamp(13px, 1.35vw, 20px);
+    line-height: 1.65;
+    color: var(--navy);
+  }
+
+  .sci-intro em {
+    font-style: italic;
+  }
+
+  .sci-intro-swipe {
+    margin-top: 10px;
+    font-size: clamp(11px, 1.05vw, 15px);
+  }
+
+  /* one panel, centered on the page both ways, holding the three
+     swipeable topic columns */
+
+  .pub-wrap {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 190px 0 40px;
+  }
+
+  .pub-panel {
+    position: relative;
+    width: min(92vw, 1150px);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .pub-scroll {
+    flex: 1;
+    min-width: 0;
+    /* hidden, not auto: horizontal movement only ever comes from the
+       < / > buttons (scrollBy), never from a drag/wheel/touch swipe -
+       overflow: hidden still lets JS scroll it, it just blocks native
+       user-driven scrolling, which used to fight the page's own
+       vertical scroll */
+    overflow-x: hidden;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+  }
+
+  .pub-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .pub-track {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 5vw;
+    padding: 0 4vw;
+    min-width: max-content;
+    width: 100%;
+  }
+
+  .pub-col {
+    width: min(26vw, 360px);
+    transform: scale(1);
+    transform-origin: top center;
+    transition: transform 0.2s ease;
+  }
+
+  .pub-col.is-active {
+    transform: scale(1.04);
+  }
+
+  .pub-col.is-active .pub-box {
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.62), rgba(255, 255, 255, 0) 85%);
+  }
+
+  .col-title {
+    font-family: var(--font-sans);
+    font-weight: 900;
+    text-transform: uppercase;
+    font-size: clamp(16px, 2vw, 28px);
+    line-height: 1.15;
+    text-align: center;
+    letter-spacing: 0.01em;
+    margin: 0 auto 20px;
+  }
+
+  .col-title span {
+    display: inline;
+    background: var(--lavender);
+    color: var(--navy);
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+    padding: 0.12em 0.3em;
+  }
+
+  /* left and right columns get their own accent color, distinct
+     from the center column, on both the meta labels and the hover
+     bars in their lists */
+
+  .pub-col--left .pub-meta strong,
+  .pub-col--left .pub-meta--muted {
+    color: #a5a5d5;
+  }
+
+  .pub-col--left .pub-list li::before {
+    background: #a5a5d5;
+  }
+
+  .pub-col--right .pub-meta strong,
+  .pub-col--right .pub-meta--muted {
+    color: #c2daee;
+  }
+
+  .pub-col--right .pub-list li::before {
+    background: #c2daee;
+  }
+
+  .pub-box {
+    /* shrinks to fit its content, up to this cap - only clips (and
+       only then do the v / ^ buttons appear) once a column actually
+       has more text than fits */
+    max-height: min(50vh, 440px);
+    overflow-y: hidden;
+    overflow-x: hidden;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0) 85%);
+    border-radius: 6px;
+    padding: 16px 14px 20px;
+    scrollbar-width: none;
+  }
+
+  .pub-box::-webkit-scrollbar {
+    display: none;
+  }
+
+  .pub-col-nav {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 14px;
+  }
+
+  .pub-col-nav.is-hidden {
+    display: none;
+  }
+
+  .pub-col-arrow {
+    border: none;
+    background: transparent;
+    color: var(--green);
+    font-family: var(--font-sans);
+    font-weight: 900;
+    font-size: 19px;
+    line-height: 1;
+    padding: 4px 6px;
+    cursor: pointer;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+  }
+
+  .pub-col-arrow:hover {
+    transform: scale(1.2);
+  }
+
+  .pub-col-arrow[disabled] {
+    opacity: 0.35;
+    cursor: default;
+    pointer-events: none;
+  }
+
+  .pub-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .pub-list li {
+    position: relative;
+    padding-left: 16px;
+    margin-bottom: 30px;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  .pub-list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--navy);
+    transition: width 0.15s ease;
+  }
+
+  .pub-list li:hover::before {
+    width: 7px;
+  }
+
+  .pub-list em {
+    font-style: italic;
+  }
+
+  .pub-meta {
+    margin: 8px 0 0;
+    font-size: 13px;
+  }
+
+  .pub-meta a {
+    color: var(--navy);
+  }
+
+  .pub-meta--muted {
+    color: rgba(5, 62, 118, 0.45);
+    font-style: italic;
+  }
+
+  .scroll-arrow {
+    flex: 0 0 auto;
+    width: 56px;
+    height: 56px;
+    border: none;
+    background: transparent;
+    color: var(--navy);
+    font-family: var(--font-sans);
+    font-weight: 900;
+    font-size: 28px;
+    cursor: pointer;
+    z-index: 10;
+    transition: transform 0.15s ease, color 0.15s ease;
+  }
+
+  .scroll-arrow:hover {
+    transform: scale(1.2);
+    color: #14110a;
+  }
+
+  @media (max-width: 760px) {
+    .pub-wrap {
+      padding: 300px 0 40px;
+    }
+
+    .sci-intro {
+      width: 100%;
+      padding: 0 20px;
+    }
+
+    .pub-panel {
+      width: 100%;
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .pub-scroll {
+      height: auto;
+      overflow: visible;
+      width: 100%;
+    }
+
+    .pub-track {
+      flex-direction: column;
+      min-width: 0;
+      padding: 0 20px;
+      gap: 40px;
+      padding-top: 0;
+    }
+
+    .pub-col {
+      width: 100%;
+      transform: none !important;
+      opacity: 1 !important;
+    }
+
+    .pub-box {
+      height: auto;
+      max-height: none;
+      overflow: visible;
+      background: none;
+      padding: 0;
+    }
+
+    .scroll-arrow,
+    .pub-col-nav {
+      display: none;
+    }
+  }
+</style>
+</head>
+<body class="page-scientific-projects">
+  <div class="gradient-bg" aria-hidden="true"></div>
+
+  <nav class="menu" aria-label="Site sections">
+    <a href="scientific_projects.html" class="active">scientific projects</a>
+    <a href="conference_presentations.html">conference presentations</a>
+    <a href="beyond_academia.html">beyond academia</a>
+    <a href="contact.html">contact</a>
+  </nav>
+
+  <div class="brand brand--corner is-visible">
+    <svg class="brand-svg" viewBox="0 0 441 231" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" role="img" aria-label="Wies Ruyters">
+      <g transform="matrix(1,0,0,1,-10720.1,-1190.32)">
+        <g transform="matrix(1.40624,0,0,1.30251,9694.17,1224.42)">
+          <g id="wies" transform="matrix(0.0509494,0.0138131,-0.00445694,0.0191619,744.146,-12.5597)">
+            <g transform="matrix(13.537,0,0,38.8598,0,0)">
+              <rect x="0" y="-18.3" width="279.7" height="102.45" style="fill:rgb(165,165,213);"/>
+            </g>
+            <g transform="matrix(13.537,0,0,38.8598,0,0)">
+              <text x="52.5px" y="56.7px" style="font-family:'AvenirNext-Heavy', 'Avenir Next', sans-serif;font-weight:900;font-size:50px;fill:rgb(5,62,118);">W<tspan x="111.35px 134.95px 170.1px " y="56.7px 56.7px 56.7px ">IES</tspan></text>
+            </g>
+          </g>
+        </g>
+        <g transform="matrix(1.40624,0,0,1.30251,9694.17,1224.42)">
+          <g id="ruyters" transform="matrix(0.0533986,-0.00893918,0.00280396,0.0195235,778.211,87.1074)">
+            <g transform="matrix(13.1599,0,0,38.8598,0,0)">
+              <rect x="0" y="-18.3" width="363.925" height="102.45" style="fill:rgb(165,165,213);"/>
+            </g>
+            <g transform="matrix(13.1599,0,0,38.8598,0,0)">
+              <text x="52.5px" y="56.7px" style="font-family:'AvenirNext-Heavy', 'Avenir Next', sans-serif;font-weight:900;font-size:50px;fill:rgb(5,62,118);">R<tspan x="93.2px 136.95px 178.85px 213.85px 249px 289.7px " y="56.7px 56.7px 56.7px 56.7px 56.7px 56.7px ">UYTERS</tspan></text>
+            </g>
+          </g>
+        </g>
+        <g transform="matrix(1.40624,0,0,1.30251,9694.17,1224.42)">
+          <a class="corner-portrait-link" xlink:href="index.html" aria-label="Go to homepage">
+            <g id="portrait" transform="matrix(0.0400641,0,0,0.0432546,905.849,-4.28418)">
+              <clipPath id="cornerClip1_0"><rect x="242.942" y="179.433" width="1122.06" height="1394.23"/></clipPath>
+              <g clip-path="url(#cornerClip1_0)">
+                <clipPath id="cornerClip2_0"><path d="M504.629,534.786C538.421,441.647 600.652,374.467 691.819,321.792C782.986,269.117 936.48,317.662 1016.3,350.095C1081.26,376.487 1123.71,449.794 1139.66,502.619C1155.62,555.445 1147.23,676.546 1166.68,688.485C1196.26,706.645 1217.63,699.835 1216.56,717.224C1215.64,732.251 1202.52,806.496 1182.26,850.365C1167.74,881.807 1132.15,883.952 1132.35,910.891C1132.9,982.987 1093.24,999.527 1105.54,1020.31C1182.63,1150.57 1202.63,1188.27 1182.55,1235.82C1173.28,1257.78 1132.42,1253.51 1153.29,1278.2C1175.62,1304.65 1297.14,1338.98 1330.09,1389.44C1363.04,1439.91 1365,1573.66 1365,1573.66L242.942,1573.66C242.942,1573.66 240.348,1495.72 256.699,1461.96C273.618,1427.02 334.244,1412.94 350.68,1372.31C375.964,1309.81 385.898,1159.29 417.202,1101.12C439.829,1059.08 530.304,1036.19 536.996,999.81C543.687,963.43 479.944,885.581 471.534,830C460.223,755.244 470.836,627.925 504.629,534.786Z"/></clipPath>
+                <g clip-path="url(#cornerClip2_0)">
+                  <g transform="matrix(17.7495,-0,-0,17.7495,-4399.87,-506.355)">
+                    <image xlink:href="data:image/jpeg;base64,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" x="261.574" y="45.344" width="64" height="72"/>
+                  </g>
+                </g>
+                <path class="corner-portrait-outline" d="M504.629,534.786C538.421,441.647 600.652,374.467 691.819,321.792C782.986,269.117 936.48,317.662 1016.3,350.095C1081.26,376.487 1123.71,449.794 1139.66,502.619C1155.62,555.445 1147.23,676.546 1166.68,688.485C1196.26,706.645 1217.63,699.835 1216.56,717.224C1215.64,732.251 1202.52,806.496 1182.26,850.365C1167.74,881.807 1132.15,883.952 1132.35,910.891C1132.9,982.987 1093.24,999.527 1105.54,1020.31C1182.63,1150.57 1202.63,1188.27 1182.55,1235.82C1173.28,1257.78 1132.42,1253.51 1153.29,1278.2C1175.62,1304.65 1297.14,1338.98 1330.09,1389.44C1363.04,1439.91 1365,1573.66 1365,1573.66L242.942,1573.66C242.942,1573.66 240.348,1495.72 256.699,1461.96C273.618,1427.02 334.244,1412.94 350.68,1372.31C375.964,1309.81 385.898,1159.29 417.202,1101.12C439.829,1059.08 530.304,1036.19 536.996,999.81C543.687,963.43 479.944,885.581 471.534,830C460.223,755.244 470.836,627.925 504.629,534.786Z"/>
+              </g>
+            </g>
+          </a>
+        </g>
+        <g transform="matrix(1.40624,0,0,1.30251,9694.17,1224.42)">
+          <a class="corner-mail-link" xlink:href="mailto:wies.ruyters@wur.nl" aria-label="Email Wies Ruyters">
+            <g id="mail" transform="matrix(0.0487022,0,1.0842e-19,0.00744477,742.626,62.3573)">
+              <g transform="matrix(14.6013,0,0,103.126,0,0)">
+                <rect class="corner-mail-bg" x="25.613" y="-5.181" width="330.046" height="28.125"/>
+              </g>
+              <g transform="matrix(14.6013,0,0,103.126,0,0)">
+                <text x="25.613px" y="17.5px" style="font-family:'AndaleMono', 'Andale Mono', monospace;font-size:25px;">w<tspan x="43.115px 60.618px 78.12px 95.623px 113.125px 130.627px 148.13px 165.632px 183.135px 200.637px 218.14px 235.642px 253.145px 270.647px 288.149px 305.652px 323.154px 340.657px " y="17.5px 17.5px 17.5px 17.5px 17.5px 17.5px 17.5px 17.5px 17.5px 17.5px 17.5px 17.5px 17.5px 17.5px 17.5px 17.5px 17.5px 17.5px ">ies.ruyters@wur.nl</tspan></text>
+              </g>
+            </g>
+          </a>
+        </g>
+      </g>
+    </svg>
+  </div>
+
+  <main class="pub-wrap">
+    <div class="sci-intro">
+      <p>
+        Within my PhD, I combine theories and insights from
+        <em class="highlight highlight--green">political communication</em> with
+        methods and best practices from
+        <em class="highlight highlight--green">data science.</em>
+      </p>
+      <p class="sci-intro-swipe">
+        Use <em class="highlight">&lt; &gt;</em> to explore research areas that my work relates to, and <em class="highlight">∨ ∧</em> to browse all projects within each area.
+      </p>
+    </div>
+
+    <div class="pub-panel">
+    <button class="scroll-arrow scroll-arrow--left" type="button" aria-label="Scroll left">&lt;</button>
+
+    <div class="pub-scroll" data-gradient-scroll="x">
+      <div class="pub-track">
+        <section class="pub-col pub-col--left">
+          <h2 class="col-title"><span>computational</span><br><span>methods</span></h2>
+          <div class="pub-box">
+            <ul class="pub-list">
+              <li>
+                <p><strong>Wies Ruyters</strong>, Susan Vermeer, Sanne Kruikemeier &amp; Rens Vliegenthart (2025)<br>
+                <em>Embedding, embedding on the wall; who is the most prominent politician of them all? Exploring automated methods to study multimodal political news coverage</em></p>
+                <p class="pub-meta"><strong>Published in:</strong><br>Communication Methods and Measures<br>DOI: <a href="https://doi.org/10.1080/19312458.2025.2558736" target="_blank" rel="noopener">10.1080/19312458.2025.2558736</a></p>
+              </li>
+              <li>
+                <p>Mariska van Dam, <strong>Wies Ruyters</strong><br>
+                <em>Connected Conservatives: A network study on far right discourse on X.com (running title)</em></p>
+                <p class="pub-meta pub-meta--muted">Work in progress</p>
+              </li>
+            </ul>
+          </div>
+          <div class="pub-col-nav">
+            <button class="pub-col-arrow pub-col-arrow--down" type="button" aria-label="Scroll down within computational methods">v</button>
+            <button class="pub-col-arrow pub-col-arrow--up" type="button" aria-label="Scroll up within computational methods">^</button>
+          </div>
+        </section>
+
+        <section class="pub-col pub-col--mid">
+          <h2 class="col-title"><span>multimodal</span><br><span>communication</span></h2>
+          <div class="pub-box">
+            <ul class="pub-list">
+              <li>
+                <p><strong>Wies Ruyters</strong>, Susan Vermeer &amp; Rens Vliegenthart<br>
+                <em>Modality matters: the effects of monomodal versus multimodal news coverage on party leader recall</em></p>
+                <p class="pub-meta"><strong>Forthcoming:</strong><br>Oxford Handbook of Personality Politics<br>Section 4, Media and personality politics</p>
+              </li>
+              <li>
+                <p><strong>Wies Ruyters</strong>, Susan Vermeer, Sanne Kruikemeier &amp; Rens Vliegenthart<br>
+                <em>The Populist Gaze? A multimodal analysis of the convergence of politicians' Instagram communication and their news portrayals (running title)</em></p>
+                <p class="pub-meta pub-meta--muted">Work in progress</p>
+              </li>
+            </ul>
+          </div>
+          <div class="pub-col-nav">
+            <button class="pub-col-arrow pub-col-arrow--down" type="button" aria-label="Scroll down within multimodal communication">v</button>
+            <button class="pub-col-arrow pub-col-arrow--up" type="button" aria-label="Scroll up within multimodal communication">^</button>
+          </div>
+        </section>
+
+        <section class="pub-col pub-col--right">
+          <h2 class="col-title"><span>identity - ideology</span><br><span>perceptions</span></h2>
+          <div class="pub-box">
+            <ul class="pub-list">
+              <li>
+                <p><strong>Wies Ruyters</strong><br>
+                <em>Wingwomen: How left-progressive and right-conservative leaders perform femininity on Instagram (running title)</em></p>
+                <p class="pub-meta pub-meta--muted">Work in progress</p>
+              </li>
+            </ul>
+          </div>
+          <div class="pub-col-nav">
+            <button class="pub-col-arrow pub-col-arrow--down" type="button" aria-label="Scroll down within identity - ideology perceptions">v</button>
+            <button class="pub-col-arrow pub-col-arrow--up" type="button" aria-label="Scroll up within identity - ideology perceptions">^</button>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <button class="scroll-arrow scroll-arrow--right" type="button" aria-label="Scroll right">&gt;</button>
+    </div>
+  </main>
+
+  <footer class="site-footer">© wies ruyters | 2026 | github pages</footer>
+
+  <script src="js/gradient.js?v=2" defer></script>
+  <script src="js/publications.js?v=5" defer></script>
+</body>
+</html>
