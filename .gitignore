@@ -1,0 +1,7 @@
+.DS_Store
+page_design/
+portfolio/
+.claude/
+.vscode/
+*.afdesign
+downloads/README.md
