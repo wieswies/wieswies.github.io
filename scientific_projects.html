@@ -9,7 +9,7 @@
 <link rel="icon" type="image/png" sizes="512x512" href="vis/favicon-512.png?v=2">
 <link rel="apple-touch-icon" href="vis/favicon-180.png?v=2">
 <link rel="stylesheet" href="css/fonts.css">
-<link rel="stylesheet" href="css/styles.css?v=5">
+<link rel="stylesheet" href="css/styles.css?v=6">
 <style>
   body.page-scientific-projects {
     --angle-base: 130deg;
@@ -22,10 +22,10 @@
 
   .sci-intro {
     width: min(90vw, 900px);
-    margin: 0 auto 28px;
+    margin: 0 auto 24px;
     text-align: center;
     font-family: var(--font-mono);
-    font-size: clamp(13px, 1.35vw, 20px);
+    font-size: clamp(11px, 1vw, 15px);
     line-height: 1.65;
     color: var(--navy);
   }
@@ -34,9 +34,13 @@
     font-style: italic;
   }
 
+  /* keep the "< >" and "∨ ∧" symbol pairs on one line */
+  .sci-intro .highlight--blue {
+    white-space: nowrap;
+  }
+
   .sci-intro-swipe {
     margin-top: 10px;
-    font-size: clamp(11px, 1.05vw, 15px);
   }
 
   /* one panel, centered on the page both ways: the three research-area
@@ -49,7 +53,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     padding: 190px 0 40px;
   }
 
@@ -63,12 +67,12 @@
 
   .pub-tabs {
     /* titles are 20px, the picked one 25px (scaled with the window) */
-    --t: clamp(14px, 1.39vw, 20px);
+    --t: clamp(11px, 1.3vw, 20px);
     display: flex;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-    gap: 14px 2.5vw;
+    gap: 14px 1.5vw;
     /* tall enough for the 25px title, so nothing below jumps when
        the picked one grows */
     min-height: calc(var(--t) * 3.2);
@@ -290,9 +294,65 @@
     font-style: italic;
   }
 
+  /* on desktop-sized windows, keep the intro, the titles and the box
+     between the fixed top-left menu and the fixed top-right name badge
+     (each ~300px wide), and start right at the top - beside the menu,
+     not below it. The box then takes exactly the height that is left
+     in the window, so it and its buttons are never cut off. */
+  @media (min-width: 1000px) {
+    .sci-intro {
+      width: min(calc(100vw - 660px), 900px);
+    }
+
+    .pub-wrap {
+      height: 100vh;
+      min-height: 0;
+      justify-content: flex-start;
+      padding: 40px 0 60px;
+    }
+
+    .pub-panel {
+      flex: 1 1 0;
+      min-height: 0;
+      width: min(calc(100vw - 620px), 1000px);
+    }
+
+    /* the three titles stay on one row and may run a bit wider than
+       the intro and box - they sit below the menu and badge */
+    .pub-tabs {
+      width: min(calc(100vw - 80px), 1000px);
+      flex-wrap: nowrap;
+      margin-bottom: 28px;
+    }
+
+    .pub-viewer {
+      flex: 1 1 0;
+      min-height: 0;
+      width: clamp(300px, 35.5vw, 560px);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .pub-stage {
+      flex: 1 1 0;
+      min-height: 150px;
+      max-height: 480px;
+    }
+
+    .pub-box {
+      height: 100%;
+    }
+  }
+
+  @media (min-width: 1360px) {
+    .pub-tabs {
+      --t: clamp(14px, 1.39vw, 20px);
+    }
+  }
+
   @media (max-width: 760px) {
     .pub-wrap {
-      padding: 300px 0 40px;
+      padding: calc(var(--header-h) + 28px) 0 40px;
     }
 
     .sci-intro {
@@ -402,13 +462,13 @@
   <main class="pub-wrap">
     <div class="sci-intro">
       <p>
-        Within my PhD, I combine theories and insights from
+        <span class="highlight">Within my PhD, I combine theories and insights from
         <em class="highlight highlight--green">political communication</em> with
         methods and best practices from
-        <em class="highlight highlight--green">data science.</em>
+        <em class="highlight highlight--green">data science.</em></span>
       </p>
       <p class="sci-intro-swipe">
-        Click on the research areas to see what projects I am working on / have worked on. Use <em class="highlight">&lt; &gt;</em> to move between areas and <em class="highlight">∨ ∧</em> to browse all projects within an area.
+        <span class="highlight">Click on the research areas to see what projects I am working on / have worked on. Use <em class="highlight highlight--blue">&lt; &gt;</em> to move between areas and <em class="highlight highlight--blue">∨ ∧</em> to browse all projects within an area.</span>
       </p>
     </div>
 

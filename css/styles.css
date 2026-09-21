@@ -18,6 +18,15 @@
   --blue-accent: #c2daee;
   --green: rgb(8, 211, 123);
   --white: #ffffff;
+
+  /* Header (top-left menu + top-right name badge). Full size from 900px
+     wide upward; below that both shrink in proportion to the window so
+     they always sit side by side at the top and never overlap.
+     --header-h is the header's height, for pages to leave room for it. */
+  --hdr-font: clamp(9px, 1.667vw, 15px);
+  --hdr-inset: clamp(8px, 2.667vw, 24px);
+  --brand-w: clamp(110px, 33.333vw, 300px);
+  --header-h: max(calc(var(--hdr-inset) + 8.3 * var(--hdr-font)), calc(0.53 * var(--brand-w)));
 }
 
 * {
@@ -94,8 +103,8 @@ img {
 
 .menu {
   position: fixed;
-  top: 24px;
-  left: 24px;
+  top: var(--hdr-inset);
+  left: var(--hdr-inset);
   z-index: 30;
   display: flex;
   flex-direction: column;
@@ -106,8 +115,8 @@ img {
 .menu a {
   display: block;
   width: fit-content;
-  padding: 7px 16px;
-  font-size: 15px;
+  padding: 0.467em 1.067em;
+  font-size: var(--hdr-font);
   letter-spacing: 0.06em;
   text-decoration: none;
   background: var(--navy);
@@ -159,7 +168,7 @@ img {
   position: fixed;
   top: 0;
   right: 0;
-  width: 300px;
+  width: var(--brand-w);
   z-index: 25;
   opacity: 0;
   pointer-events: none;
@@ -201,13 +210,6 @@ img {
 .corner-mail-link:hover .corner-mail-bg,
 .corner-mail-link:focus-visible .corner-mail-bg {
   fill: var(--yellow);
-}
-
-@media (max-width: 640px) {
-  .brand--corner {
-    top: 168px;
-    width: 210px;
-  }
 }
 
 /* ---------- footer copyright ---------- */
