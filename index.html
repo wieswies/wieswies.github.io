@@ -1025,13 +1025,19 @@
 
   /* ============ contact ============ */
 
+  /* The contact section is exactly one window tall (no scrolling inside
+     it): the halo is sized by the room that's left between the top of
+     the window (or the header) and the footer, as well as by the width. */
   .contact-page {
-    min-height: 100vh;
+    --halo-top: calc(var(--header-h) + 12px);
+    --halo-bottom: 56px; /* leaves room for the footer */
+    --halo-fit: calc((100vh - var(--halo-top) - var(--halo-bottom)) * 954 / 822);
+    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 210px 4vw 60px;
+    padding: var(--halo-top) 4vw var(--halo-bottom);
   }
 
   /* the contour + all five balloons are baked into one image now
@@ -1042,7 +1048,7 @@
      cleanly to mobile without a second set of positions. */
   .contour-halo {
     position: relative;
-    width: min(84vw, 820px);
+    width: min(84vw, 820px, var(--halo-fit));
     aspect-ratio: 954 / 822;
     margin: 0 auto;
   }
@@ -1121,16 +1127,27 @@
     height: 24.2%;
   }
 
+  @media (min-width: 1000px) {
+    .contact-page {
+      --halo-top: 24px;
+    }
+
+    .contour-halo {
+      width: min(calc(100vw - 660px), 820px, var(--halo-fit));
+    }
+  }
+
   @media (max-width: 900px) {
     .contact-page {
+      --halo-top: calc(var(--header-h) + 28px);
       justify-content: flex-start;
-      padding: calc(var(--header-h) + 28px) 20px 30px;
+      padding: var(--halo-top) 20px var(--halo-bottom);
     }
 
     /* the halo uses the same percentages at every width - it's one
        image, so it just scales down as a whole with the container */
     .contour-halo {
-      width: min(90vw, 380px);
+      width: min(90vw, 380px, var(--halo-fit));
     }
   }
 </style>
