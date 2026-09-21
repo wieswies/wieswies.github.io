@@ -104,16 +104,1045 @@
       margin-left: 0;
     }
   }
+
+  /* ============ scientific projects ============ */
+
+  /* intro copy above the research-area titles */
+
+  .sci-intro {
+    width: min(90vw, 900px);
+    margin: 0 auto 24px;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: clamp(11px, 1vw, 15px);
+    line-height: 1.65;
+    color: var(--navy);
+  }
+
+  .sci-intro em {
+    font-style: italic;
+  }
+
+  /* keep the "< >" and "∨ ∧" symbol pairs on one line */
+  .sci-intro .highlight--blue {
+    white-space: nowrap;
+  }
+
+  .sci-intro-swipe {
+    margin-top: 10px;
+  }
+
+  /* one panel, centered on the page both ways: the three research-area
+     titles on top; clicking one opens a narrow box of its projects
+     below, with < > beside it to move between areas */
+
+  .pub-wrap {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 190px 0 40px;
+  }
+
+  .pub-panel {
+    position: relative;
+    width: min(96vw, 1000px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .pub-tabs {
+    /* titles are 20px, the picked one 25px (scaled with the window) */
+    --t: clamp(11px, 1.3vw, 20px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px 1.5vw;
+    /* tall enough for the 25px title, so nothing below jumps when
+       the picked one grows */
+    min-height: calc(var(--t) * 3.2);
+    margin: 0 0 36px;
+  }
+
+  /* each title is a button: lavender with navy text, and the picked
+     one is inverted (navy with lavender text) and a bit bigger */
+
+  .col-title {
+    appearance: none;
+    border: 0;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+    color: inherit;
+    font-family: var(--font-sans);
+    font-weight: 900;
+    text-transform: uppercase;
+    font-size: var(--t);
+    line-height: 1.15;
+    text-align: center;
+    letter-spacing: 0.01em;
+    transition: font-size 0.2s ease;
+  }
+
+  .col-title:focus-visible {
+    outline: 3px solid var(--yellow);
+    outline-offset: 4px;
+  }
+
+  .col-title span {
+    display: inline;
+    background: var(--lavender);
+    color: var(--navy);
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+    padding: 0.12em 0.3em;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .col-title[aria-expanded="false"]:hover span {
+    background: #9797cc;
+  }
+
+  .col-title[aria-expanded="true"] {
+    font-size: calc(var(--t) * 1.25);
+  }
+
+  .col-title[aria-expanded="true"] span {
+    background: var(--navy);
+    color: var(--lavender);
+  }
+
+  /* the box and its buttons: closed until a title is clicked. Hidden
+     with visibility (not display) so the page doesn't reflow */
+
+  .pub-viewer {
+    width: clamp(340px, 35.5vw, 560px);
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease, visibility 0.25s;
+  }
+
+  .pub-viewer.is-open {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .pub-stage {
+    position: relative;
+  }
+
+  .pub-box {
+    width: 100%;
+    /* grows with the window (so the v / ^ buttons below always stay
+       on screen), within sensible limits */
+    height: clamp(170px, calc(100vh - 565px), 420px);
+    overflow-y: hidden;
+    overflow-x: hidden;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.62), rgba(255, 255, 255, 0) 85%);
+    border-radius: 6px;
+    padding: 16px 18px 20px;
+    scrollbar-width: none;
+  }
+
+  .pub-box::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* < > beside the box switch to the previous / next research area;
+     each disappears at the end of the row */
+
+  .scroll-arrow {
+    position: absolute;
+    top: 50%;
+    width: 44px;
+    height: 56px;
+    margin-top: -28px;
+    border: none;
+    background: transparent;
+    color: var(--navy);
+    font-family: var(--font-sans);
+    font-weight: 900;
+    font-size: 28px;
+    cursor: pointer;
+    transition: transform 0.15s ease, color 0.15s ease;
+  }
+
+  .scroll-arrow--left {
+    left: -52px;
+  }
+
+  .scroll-arrow--right {
+    right: -52px;
+  }
+
+  .scroll-arrow:hover {
+    transform: scale(1.2);
+    color: #14110a;
+  }
+
+  .scroll-arrow.is-hidden {
+    visibility: hidden;
+  }
+
+  /* the v / ^ buttons are always there, full-strength green */
+
+  .pub-col-nav {
+    display: flex;
+    justify-content: center;
+    gap: 22px;
+    margin-top: 12px;
+  }
+
+  .pub-col-arrow {
+    border: none;
+    background: transparent;
+    color: var(--green);
+    line-height: 0;
+    padding: 4px 8px;
+    cursor: pointer;
+    transition: transform 0.15s ease;
+  }
+
+  .pub-col-arrow svg {
+    display: block;
+    width: 30px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .pub-col-arrow:hover {
+    transform: scale(1.2);
+  }
+
+  .pub-col-arrow[disabled] {
+    cursor: default;
+    pointer-events: none;
+  }
+
+  .pub-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .pub-list li {
+    position: relative;
+    padding-left: 16px;
+    margin-bottom: 30px;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    line-height: 1.55;
+  }
+
+  /* one accent for every list: the light purple of the titles */
+
+  .pub-list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--lavender);
+    transition: width 0.15s ease;
+  }
+
+  .pub-list li:hover::before {
+    width: 7px;
+  }
+
+  .pub-list em {
+    font-style: italic;
+  }
+
+  .pub-meta {
+    margin: 8px 0 0;
+    font-size: 12px;
+  }
+
+  .pub-meta strong,
+  .pub-meta--muted {
+    color: var(--lavender);
+  }
+
+  .pub-meta a {
+    color: var(--navy);
+  }
+
+  .pub-meta--muted {
+    font-style: italic;
+  }
+
+  /* on desktop-sized windows, keep the intro, the titles and the box
+     between the fixed top-left menu and the fixed top-right name badge
+     (each ~300px wide), and start right at the top - beside the menu,
+     not below it. The box then takes exactly the height that is left
+     in the window, so it and its buttons are never cut off. */
+  @media (min-width: 1000px) {
+    .sci-intro {
+      width: min(calc(100vw - 660px), 900px);
+    }
+
+    .pub-wrap {
+      height: 100vh;
+      min-height: 0;
+      justify-content: flex-start;
+      padding: 40px 0 60px;
+    }
+
+    .pub-panel {
+      flex: 1 1 0;
+      min-height: 0;
+      width: min(calc(100vw - 620px), 1000px);
+    }
+
+    /* the three titles stay on one row and may run a bit wider than
+       the intro and box - they sit below the menu and badge */
+    .pub-tabs {
+      width: min(calc(100vw - 80px), 1000px);
+      flex-wrap: nowrap;
+      margin-bottom: 28px;
+    }
+
+    .pub-viewer {
+      flex: 1 1 0;
+      min-height: 0;
+      width: clamp(300px, 35.5vw, 560px);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .pub-stage {
+      flex: 1 1 0;
+      min-height: 150px;
+      max-height: 480px;
+    }
+
+    .pub-box {
+      height: 100%;
+    }
+  }
+
+  @media (min-width: 1360px) {
+    .pub-tabs {
+      --t: clamp(14px, 1.39vw, 20px);
+    }
+  }
+
+  @media (max-width: 760px) {
+    .pub-wrap {
+      padding: calc(var(--header-h) + 28px) 0 40px;
+    }
+
+    .sci-intro {
+      width: 100%;
+      padding: 0 20px;
+    }
+
+    .pub-panel {
+      width: 100%;
+      padding: 0 20px;
+    }
+
+    .pub-tabs {
+      margin-bottom: 24px;
+    }
+
+    /* on a phone all three titles are on screen, so no < > needed,
+       and the closed box takes no space at all */
+    .pub-viewer {
+      width: 100%;
+      display: none;
+    }
+
+    .pub-viewer.is-open {
+      display: block;
+    }
+
+    .pub-box {
+      height: auto;
+      overflow: visible;
+      background: none;
+      padding: 0;
+    }
+
+    .scroll-arrow,
+    .pub-col-nav {
+      display: none;
+    }
+  }
+
+  /* ============ conference presentations ============ */
+
+  /* pale dotted world map, sitting between the gradient wash and the
+     content. Sticky (not fixed): it stays put behind this section while
+     you scroll through it, and scrolls away with it at the end. */
+  .conf-globe-bg {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    margin-bottom: -100vh;
+    z-index: -1;
+    background-image: url("vis/conference_globe_background.png");
+    background-repeat: no-repeat;
+    background-position: center 18%;
+    background-size: min(1500px, 140%) auto;
+    opacity: 0.85;
+    pointer-events: none;
+  }
+
+  .conf-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 230px 4vw 60px;
+  }
+
+  /* the overview is one card a bit over half the window wide (based on
+     page_design/page_03), centered; the tags straddle its left edge */
+  .conf-panel {
+    width: clamp(640px, 60vw, 960px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .conf-intro {
+    width: 100%;
+    margin: 0 auto 22px;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: clamp(11px, 1vw, 15px);
+    line-height: 1.65;
+    color: var(--navy);
+  }
+
+  .conf-intro em {
+    font-style: italic;
+  }
+
+  /* keep the "< >" symbol pair on one line */
+  .conf-intro .highlight--blue {
+    white-space: nowrap;
+  }
+
+  .conf-intro-swipe {
+    margin-top: 10px;
+  }
+
+  .conf-hint {
+    margin: 0 0 22px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    color: var(--navy);
+    background: rgba(255, 255, 255, 0.85);
+    padding: 4px 12px;
+  }
+
+  /* rows stack into one card, alternating a brighter and a paler
+     white; the corners of the first and last row round it off */
+  .conf-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .conf-row {
+    background: rgba(255, 255, 255, 0.6);
+  }
+
+  .conf-row:nth-child(even) {
+    background: rgba(255, 255, 255, 0.3);
+  }
+
+  .conf-row:first-child {
+    border-radius: 6px 6px 0 0;
+  }
+
+  .conf-row:last-child {
+    border-radius: 0 0 6px 6px;
+  }
+
+  .conf-row-inner {
+    position: relative;
+  }
+
+  /* tag sits centered on the card's left edge, halfway down its row */
+  .conf-tag {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    width: clamp(70px, 7vw, 92px);
+    margin: 0;
+    background: var(--lavender);
+    color: var(--navy);
+    font-family: var(--font-sans);
+    font-weight: 900;
+    font-size: clamp(13px, 1.3vw, 18px);
+    letter-spacing: 0.02em;
+    text-align: center;
+    padding: 10px 6px;
+  }
+
+  .conf-row--sm .conf-tag {
+    width: fit-content;
+    font-size: clamp(11px, 1vw, 14px);
+    padding: 5px 8px;
+  }
+
+  /* room on the left for the tag, on the right for the < > buttons */
+  .conf-entries-frame {
+    position: relative;
+    min-width: 0;
+    padding: 12px 4.5% 12px 9%;
+  }
+
+  .conf-row--sm .conf-entries-frame {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  .conf-entries {
+    display: flex;
+    gap: 20px;
+    /* hidden, not auto: horizontal movement only ever comes from a
+       row's own < / > buttons (scrollBy), never a drag/wheel/touch
+       swipe - that swipe used to get mistaken for the page's own
+       vertical scroll and swallow it */
+    overflow-x: hidden;
+    overscroll-behavior: contain;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+  }
+
+  .conf-entries::-webkit-scrollbar {
+    display: none;
+  }
+
+  .conf-row-nav {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    z-index: 2;
+  }
+
+  .conf-row-nav.is-hidden {
+    display: none;
+  }
+
+  .conf-row-arrow {
+    border: none;
+    background: transparent;
+    color: var(--navy);
+    font-family: var(--font-sans);
+    font-weight: 900;
+    font-size: 15px;
+    line-height: 1;
+    padding: 3px 5px;
+    cursor: pointer;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+  }
+
+  .conf-row-arrow:hover {
+    transform: scale(1.25);
+  }
+
+  .conf-row-arrow[disabled] {
+    cursor: default;
+    pointer-events: none;
+  }
+
+  /* three columns fill a row; a fourth and beyond are reached with
+     the row's < > buttons. Each entry is a tinted block with a navy bar. */
+  .conf-entry {
+    flex: 0 0 auto;
+    width: calc((100% - 40px) / 3);
+    min-width: 170px;
+    position: relative;
+    padding: 10px 8px 10px 14px;
+    background: rgba(165, 165, 213, 0.22);
+  }
+
+  .conf-entry::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--navy);
+    transition: width 0.15s ease;
+  }
+
+  .conf-entry:hover::before {
+    width: 7px;
+  }
+
+  /* blank placeholder column: keeps an older-only conference's
+     entries lined up under the same columns as the rows above */
+  .conf-entry--spacer {
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .conf-entry--spacer::before {
+    display: none;
+  }
+
+  .entry-date {
+    margin: 0 0 4px;
+    font-family: var(--font-mono);
+    font-style: italic;
+    font-size: 12.5px;
+    color: var(--navy-soft);
+  }
+
+  .entry-location {
+    margin: 0 0 6px;
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  .entry-desc {
+    margin: 0 0 10px;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  /* the "Project:" line sits right under the "Panel:" line */
+  .entry-project {
+    margin-top: -4px;
+  }
+
+  .entry-link {
+    display: block;
+    width: fit-content;
+    max-width: 100%;
+    font-family: var(--font-mono);
+    font-style: italic;
+    font-size: 12.5px;
+    text-decoration: none;
+    padding: 2px 7px;
+    margin-bottom: 5px;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+
+  .entry-link--youtube {
+    background: var(--yellow);
+    color: var(--navy);
+  }
+
+  .entry-link--youtube:hover,
+  .entry-link--youtube:focus-visible {
+    background: var(--navy);
+    color: var(--yellow);
+  }
+
+  .entry-link--pdf {
+    background: rgb(8, 211, 123);
+    color: var(--navy);
+  }
+
+  .entry-link--pdf:hover,
+  .entry-link--pdf:focus-visible {
+    background: var(--navy);
+    color: rgb(8, 211, 123);
+  }
+
+  /* on desktop-sized windows, keep the intro between the fixed top-left
+     menu and the fixed top-right name badge, and start right at the top
+     (beside the menu, not below it) so the card gets more room */
+  @media (min-width: 1000px) {
+    .conf-page {
+      padding-top: 40px;
+    }
+
+    .conf-panel .conf-intro {
+      width: min(calc(100vw - 660px), 900px);
+    }
+  }
+
+  @media (max-width: 760px) {
+    .conf-globe-bg {
+      background-position: center 10%;
+      background-size: 220% auto;
+    }
+
+    .conf-page {
+      padding: calc(var(--header-h) + 28px) 5vw 40px;
+    }
+
+    .conf-panel {
+      width: min(92vw, 1180px);
+    }
+
+    .conf-list {
+      gap: 30px;
+    }
+
+    .conf-row,
+    .conf-row:nth-child(even) {
+      background: none;
+      border-radius: 0;
+    }
+
+    .conf-row-inner {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .conf-tag,
+    .conf-row--sm .conf-tag {
+      position: static;
+      transform: none;
+      width: fit-content;
+    }
+
+    .conf-row--lg .conf-entries-frame {
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.15));
+      border-radius: 6px;
+    }
+
+    .conf-row--lg .conf-entries-frame,
+    .conf-row--sm .conf-entries-frame {
+      width: 100%;
+      padding: 10px 30px 10px 4px;
+    }
+
+    .conf-entries {
+      gap: 16px;
+    }
+
+    /* one presentation block per box on mobile: entries take the
+       full row width, paged one at a time with the < > buttons */
+    .conf-entry {
+      width: 100%;
+      min-width: 0;
+      padding: 0 0 0 14px;
+      background: none;
+    }
+
+    .conf-entry::before {
+      top: 2px;
+      bottom: 2px;
+    }
+
+    .conf-row-nav {
+      right: 2px;
+    }
+  }
+
+  /* ============ beyond academia ============ */
+
+  .beyond-hero {
+    position: relative;
+    height: 100vh;
+    width: auto;
+    aspect-ratio: 1440 / 1001;
+    max-width: 100vw;
+    margin: 0 auto;
+  }
+
+  /* static visuals + labels + text, no hover/interaction */
+
+  .beyond-photo {
+    position: absolute;
+    left: 28.4%;
+    top: 13.7%;
+    width: 16.2%;
+    z-index: 2;
+  }
+
+  .beyond-photo img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .beyond-title {
+    position: absolute;
+    width: fit-content;
+    max-width: 60vw;
+    text-align: center;
+    font-family: var(--font-sans);
+    font-weight: 900;
+    line-height: 1.08;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    font-size: clamp(18px, 2.9vw, 42px);
+    padding: 0.18em 0.28em;
+    z-index: 3;
+  }
+
+  .beyond-title--perks {
+    left: 16.4%;
+    top: 36.5%;
+    background: rgb(8, 211, 123);
+    color: #fff;
+  }
+
+  .beyond-title--polarization {
+    left: 60%;
+    top: 64%;
+    background: rgb(243, 28, 98);
+    color: var(--navy);
+  }
+
+  .beyond-copy {
+    position: absolute;
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: clamp(11px, 1.05vw, 16px);
+    line-height: 1.55;
+  }
+
+  .beyond-copy .highlight {
+    display: block;
+    width: fit-content;
+    white-space: nowrap;
+  }
+
+  .beyond-copy--perks {
+    left: 46%;
+    top: 28.5%;
+    width: 39%;
+  }
+
+  .beyond-copy--polarization {
+    left: 18.3%;
+    top: 57.5%;
+    width: 42.1%;
+    text-align: right;
+  }
+
+  .beyond-copy--polarization .highlight {
+    margin-left: auto;
+  }
+
+  .beyond-crowd {
+    position: absolute;
+    left: 60.5%;
+    top: 58.9%;
+    width: 20.1%;
+    z-index: 1;
+  }
+
+  .beyond-crowd img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .beyond-copy--polarization a {
+    color: var(--navy);
+    font-weight: 700;
+    text-decoration: underline;
+  }
+
+  @media (max-width: 900px) {
+    #beyond-academia {
+      padding-bottom: 40px;
+    }
+
+    .beyond-hero {
+      width: 100%;
+      height: auto;
+      aspect-ratio: auto;
+      max-width: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: calc(var(--header-h) + 28px) 20px 20px;
+    }
+
+    .beyond-photo,
+    .beyond-title,
+    .beyond-copy,
+    .beyond-crowd {
+      position: static;
+      left: auto;
+      top: auto;
+      width: auto;
+    }
+
+    .beyond-photo {
+      width: min(60vw, 280px);
+    }
+
+    .beyond-title {
+      width: fit-content;
+      max-width: 100%;
+      text-align: center;
+    }
+
+    .beyond-title--perks {
+      margin-top: -34px;
+    }
+
+    .beyond-copy {
+      width: 100%;
+      max-width: 480px;
+      text-align: center !important;
+      margin-top: -2px;
+    }
+
+    .beyond-copy .highlight {
+      display: inline;
+      white-space: normal;
+      margin-left: 0;
+    }
+
+    .beyond-crowd {
+      width: min(70vw, 340px);
+      margin-top: 6px;
+    }
+
+    .beyond-title--polarization {
+      margin-top: -34px;
+    }
+  }
+
+  /* ============ contact ============ */
+
+  .contact-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 210px 4vw 60px;
+  }
+
+  /* the contour + all five balloons are baked into one image now
+     (vis/contour_balloons.svg, exported already laid out as a halo),
+     so there's no more separate per-balloon positioning to keep in
+     sync - just transparent hit-regions placed on top at the same
+     percentages the image itself uses, which is also why this scales
+     cleanly to mobile without a second set of positions. */
+  .contour-halo {
+    position: relative;
+    width: min(84vw, 820px);
+    aspect-ratio: 954 / 822;
+    margin: 0 auto;
+  }
+
+  .contour-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  /*
+    No CV file on the site yet. To wire this up: drop a PDF into the
+    /downloads folder (e.g. downloads/CV-wies-ruyters.pdf), then set
+    this link's href to it - the `download` attribute makes it save
+    instead of navigating.
+  */
+  .cv-hit {
+    position: absolute;
+    left: 46.2%;
+    top: 43.8%;
+    width: 30.5%;
+    height: 8.2%;
+    cursor: pointer;
+  }
+
+  .social-balloon {
+    position: absolute;
+    cursor: pointer;
+  }
+
+  .social-balloon:hover,
+  .social-balloon:focus-visible {
+    filter: brightness(1.06);
+  }
+
+  .cv-hit:focus-visible,
+  .social-balloon:focus-visible {
+    outline: 2px dashed var(--navy);
+    outline-offset: 3px;
+  }
+
+  .social-balloon--linkedin {
+    left: 41.2%;
+    top: 0.9%;
+    width: 22.9%;
+    height: 20.1%;
+  }
+
+  .social-balloon--github {
+    left: 10%;
+    top: 24.5%;
+    width: 21.1%;
+    height: 20.1%;
+  }
+
+  .social-balloon--youtube {
+    left: 74.4%;
+    top: 22.8%;
+    width: 24.7%;
+    height: 22.1%;
+    cursor: default;
+    /* no youtube URL yet - see the HTML comment above this element */
+  }
+
+  .social-balloon--scholar {
+    left: 0.6%;
+    top: 62.9%;
+    width: 25.1%;
+    height: 21.9%;
+  }
+
+  .social-balloon--bluesky {
+    left: 71.3%;
+    top: 60.8%;
+    width: 28%;
+    height: 24.2%;
+  }
+
+  @media (max-width: 900px) {
+    .contact-page {
+      justify-content: flex-start;
+      padding: calc(var(--header-h) + 28px) 20px 30px;
+    }
+
+    /* the halo uses the same percentages at every width - it's one
+       image, so it just scales down as a whole with the container */
+    .contour-halo {
+      width: min(90vw, 380px);
+    }
+  }
 </style>
 </head>
 <body>
   <div class="gradient-bg" aria-hidden="true"></div>
 
   <nav class="menu" aria-label="Site sections">
-    <a href="scientific_projects.html">scientific projects</a>
-    <a href="conference_presentations.html">conference presentations</a>
-    <a href="beyond_academia.html">beyond academia</a>
-    <a href="contact.html">contact</a>
+    <a href="#scientific-publications">scientific projects</a>
+    <a href="#conference-presentations">conference presentations</a>
+    <a href="#beyond-academia">beyond academia</a>
+    <a href="#contact">contact</a>
   </nav>
 
   <div class="brand brand--corner">
@@ -195,14 +1224,349 @@
           <span class="highlight">literacy, and I occasionally</span>
           <span class="highlight">visualize my projects on my</span>
           <span class="highlight">website.</span>
-          <span class="highlight signoff">Have a nice visit :)</span>
+          <span class="highlight signoff">Have a nice scroll :)</span>
         </p>
       </div>
+    </section>
+
+    <section id="scientific-publications" class="section" data-angle="130">
+      <div class="pub-wrap">
+          <div class="sci-intro">
+            <p>
+              <span class="highlight">Within my PhD, I combine theories and insights from
+              <em class="highlight highlight--green">political communication</em> with
+              methods and best practices from
+              <em class="highlight highlight--green">data science.</em></span>
+            </p>
+            <p class="sci-intro-swipe">
+              <span class="highlight">Click on the research areas to see what projects I am working on / have worked on. Use <em class="highlight highlight--blue">&lt; &gt;</em> to move between areas and <em class="highlight highlight--blue">∨ ∧</em> to browse all projects within an area.</span>
+            </p>
+          </div>
+
+          <div class="pub-panel">
+            <div class="pub-tabs" aria-label="Research areas">
+              <button class="col-title" type="button" id="tab-computational" aria-controls="panel-computational" aria-expanded="false"><span>computational</span><br><span>methods</span></button>
+              <button class="col-title" type="button" id="tab-multimodal" aria-controls="panel-multimodal" aria-expanded="false"><span>multimodal</span><br><span>communication</span></button>
+              <button class="col-title" type="button" id="tab-identity" aria-controls="panel-identity" aria-expanded="false"><span>identity - ideology</span><br><span>perceptions</span></button>
+            </div>
+
+            <div class="pub-viewer" id="pub-viewer">
+              <div class="pub-stage">
+                <button class="scroll-arrow scroll-arrow--left" type="button" aria-label="Previous research area">&lt;</button>
+                <div class="pub-box">
+                  <ul class="pub-list" id="panel-computational" aria-labelledby="tab-computational" hidden>
+                    <li>
+                      <p><strong>Wies Ruyters</strong>, Susan Vermeer, Sanne Kruikemeier &amp; Rens Vliegenthart (2025)<br>
+                      <em>Embedding, embedding on the wall; who is the most prominent politician of them all? Exploring automated methods to study multimodal political news coverage</em></p>
+                      <p class="pub-meta"><strong>Published in:</strong><br>Communication Methods and Measures<br>DOI: <a href="https://doi.org/10.1080/19312458.2025.2558736" target="_blank" rel="noopener">10.1080/19312458.2025.2558736</a></p>
+                    </li>
+                    <li>
+                      <p>Mariska van Dam, <strong>Wies Ruyters</strong><br>
+                      <em>Connected Conservatives: A network study on far right discourse on X.com (running title)</em></p>
+                      <p class="pub-meta pub-meta--muted">Work in progress</p>
+                    </li>
+                  </ul>
+                  <ul class="pub-list" id="panel-multimodal" aria-labelledby="tab-multimodal" hidden>
+                    <li>
+                      <p><strong>Wies Ruyters</strong>, Susan Vermeer &amp; Rens Vliegenthart<br>
+                      <em>Modality matters: the effects of monomodal versus multimodal news coverage on party leader recall</em></p>
+                      <p class="pub-meta"><strong>Forthcoming:</strong><br>Oxford Handbook of Personality Politics<br>Section 4, Media and personality politics</p>
+                    </li>
+                    <li>
+                      <p><strong>Wies Ruyters</strong>, Susan Vermeer, Sanne Kruikemeier &amp; Rens Vliegenthart<br>
+                      <em>The Populist Gaze? A multimodal analysis of the convergence of politicians' Instagram communication and their news portrayals (running title)</em></p>
+                      <p class="pub-meta pub-meta--muted">Work in progress</p>
+                    </li>
+                  </ul>
+                  <ul class="pub-list" id="panel-identity" aria-labelledby="tab-identity" hidden>
+                    <li>
+                      <p><strong>Wies Ruyters</strong><br>
+                      <em>Wingwomen: How left-progressive and right-conservative leaders perform femininity on Instagram (running title)</em></p>
+                      <p class="pub-meta pub-meta--muted">Work in progress</p>
+                    </li>
+                  </ul>
+                </div>
+                <button class="scroll-arrow scroll-arrow--right" type="button" aria-label="Next research area">&gt;</button>
+              </div>
+
+              <div class="pub-col-nav">
+                <button class="pub-col-arrow pub-col-arrow--down" type="button" aria-label="Scroll down within these projects"><svg viewBox="0 0 30 18" aria-hidden="true"><polyline points="3,3 15,15 27,3"/></svg></button>
+                <button class="pub-col-arrow pub-col-arrow--up" type="button" aria-label="Scroll up within these projects"><svg viewBox="0 0 30 18" aria-hidden="true"><polyline points="3,15 15,3 27,15"/></svg></button>
+              </div>
+            </div>
+          </div>
+        </div>
+    </section>
+
+    <section id="conference-presentations" class="section" data-angle="170">
+      <div class="conf-globe-bg" aria-hidden="true"></div>
+      <!--
+          ============================================================
+          HOW TO EDIT THE CONFERENCE PRESENTATIONS SECTION
+          ============================================================
+          Each conference has its own row (a <section class="conf-row">),
+          and each row holds one or more <article class="conf-entry">
+          blocks - one per talk/panel. To add a presentation, copy an
+          existing <article class="conf-entry">...</article> and edit:
+
+            - entry-date / entry-location / entry-desc: plain text; the
+              optional second entry-desc with class entry-project holds the
+              "Project: ..." line (leave it out where there isn't one)
+            - the "View presentation on Youtube" link: set its href to
+              the full YouTube URL, e.g.
+                <a class="entry-link entry-link--youtube"
+                   href="https://www.youtube.com/watch?v=XXXXXXXXXXX"
+                   target="_blank" rel="noopener">View presentation on Youtube</a>
+            - the "Download .pdf" link: first drop the file into the
+              /downloads folder next to this HTML file, then point the
+              href at it (the `download` attribute makes it save instead
+              of navigating), e.g.
+                <a class="entry-link entry-link--pdf"
+                   href="downloads/2026-ecpr-krakow.pdf" download>Download .pdf with notes</a>
+              See /downloads/README.md for the full step-by-step.
+
+          If neither a video nor a file exists yet for a talk, just leave
+          that <a> tag out entirely (see the Brugge/Vienna/Amsterdam/
+          Innsbrück entries below for examples with no links yet).
+
+          To add a whole new conference, copy one of the <section
+          class="conf-row ...">...</section> blocks, change the tag text
+          (e.g. "ECPR") and data-conf value, and add its entries. Rows
+          with 4+ entries scroll horizontally on their own; the page
+          itself just scrolls normally as the list grows.
+          ============================================================
+        -->
+      <div class="conf-page">
+          <div class="conf-panel">
+            <div class="conf-intro">
+              <p>
+                <span class="highlight">Every academic conference presentation brings a
+                <em class="highlight highlight--green">chance to rethink my work</em> and communicate it in a way that
+                <em class="highlight highlight--blue">narrates, inspires, and provokes</em> -
+                while being <em class="highlight highlight--green">fun</em> and <em class="highlight highlight--green">relatable</em>.</span>
+              </p>
+              <p class="conf-intro-swipe">
+                <span class="highlight">Use <em class="highlight highlight--blue">&lt; &gt;</em> to page through a conference's presentations, and scroll down to move through conferences.</span>
+              </p>
+            </div>
+
+            <p class="conf-hint">&lsaquo; newer &nbsp;&nbsp;&nbsp; older &rsaquo;</p>
+
+            <div class="conf-list">
+              <section class="conf-row conf-row--lg" data-conf="ecpr">
+                <div class="conf-row-inner">
+                  <h2 class="conf-tag">ECPR</h2>
+                  <div class="conf-entries-frame">
+                    <div class="conf-entries" data-conf-entries>
+                      <article class="conf-entry">
+                        <p class="entry-date">Thursday, September 10th 2026</p>
+                        <p class="entry-location">Kráków, Poland</p>
+                        <p class="entry-desc">Panel: Comparing political networks</p>
+                        <p class="entry-desc entry-project">Project: Connected Conservatives</p>
+                        <a class="entry-link entry-link--youtube" href="https://www.youtube.com/watch?v=XXXXXXXXXXX" target="_blank" rel="noopener">View presentation on Youtube</a>
+                        <a class="entry-link entry-link--pdf" href="downloads/2026-ecpr-krakow-comparing-political-networks.pdf" download>Download .pdf with notes</a>
+                      </article>
+                      <article class="conf-entry">
+                        <p class="entry-date">Tuesday, September 8th 2026</p>
+                        <p class="entry-location">Kráków, Poland</p>
+                        <p class="entry-desc">Panel: War, conflict and information politics</p>
+                        <p class="entry-desc entry-project">Project: The Populist Gaze</p>
+                        <a class="entry-link entry-link--youtube" href="https://www.youtube.com/watch?v=XXXXXXXXXXX" target="_blank" rel="noopener">View presentation on Youtube</a>
+                        <a class="entry-link entry-link--pdf" href="downloads/2026-ecpr-krakow-war-conflict-information-politics.pdf" download>Download .pdf with notes</a>
+                      </article>
+                    </div>
+                    <div class="conf-row-nav">
+                      <button class="conf-row-arrow conf-row-arrow--next" type="button" aria-label="Show older ECPR presentations">&gt;</button>
+                      <button class="conf-row-arrow conf-row-arrow--prev" type="button" aria-label="Show newer ECPR presentations">&lt;</button>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section class="conf-row conf-row--lg" data-conf="ica">
+                <div class="conf-row-inner">
+                  <h2 class="conf-tag">ICA</h2>
+                  <div class="conf-entries-frame">
+                    <div class="conf-entries" data-conf-entries>
+                      <article class="conf-entry">
+                        <p class="entry-date">Friday, June 5th 2026</p>
+                        <p class="entry-location">Cape Town, South Africa</p>
+                        <p class="entry-desc">High Density Panel:<br>Political communication</p>
+                        <p class="entry-desc entry-project">Project: Modality Matters?!</p>
+                        <a class="entry-link entry-link--youtube" href="https://www.youtube.com/watch?v=XXXXXXXXXXX" target="_blank" rel="noopener">View 3min pitch on Youtube</a>
+                        <a class="entry-link entry-link--pdf" href="downloads/2026-ica-cape-town.pdf" download>Download .pdf</a>
+                      </article>
+                      <article class="conf-entry">
+                        <p class="entry-date">Monday, June 4th 2025</p>
+                        <p class="entry-location">Denver Colorado, USA</p>
+                        <p class="entry-desc">Pre-Conference:<br>Frames of visual transition</p>
+                        <p class="entry-desc entry-project">Project: Modality Matters?!</p>
+                        <a class="entry-link entry-link--youtube" href="https://www.youtube.com/watch?v=XXXXXXXXXXX" target="_blank" rel="noopener">View presentation on Youtube</a>
+                        <a class="entry-link entry-link--pdf" href="downloads/2025-ica-denver.pdf" download>Download .pdf with notes</a>
+                      </article>
+                    </div>
+                    <div class="conf-row-nav">
+                      <button class="conf-row-arrow conf-row-arrow--next" type="button" aria-label="Show older ICA presentations">&gt;</button>
+                      <button class="conf-row-arrow conf-row-arrow--prev" type="button" aria-label="Show newer ICA presentations">&lt;</button>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section class="conf-row conf-row--lg" data-conf="nefca">
+                <div class="conf-row-inner">
+                  <h2 class="conf-tag">NEFCA</h2>
+                  <div class="conf-entries-frame">
+                    <div class="conf-entries" data-conf-entries>
+                      <article class="conf-entry">
+                        <p class="entry-date">Thursday, January 29th 2026</p>
+                        <p class="entry-location">Papendal, the Netherlands</p>
+                        <p class="entry-desc">Academic poster presentation</p>
+                        <p class="entry-desc entry-project">Project: The Populist Gaze</p>
+                        <a class="entry-link entry-link--pdf" href="downloads/2026-nefca-papendal-poster.pdf" download>Download .pdf</a>
+                      </article>
+                      <article class="conf-entry">
+                        <p class="entry-date">Thursday, February 3rd 2025</p>
+                        <p class="entry-location">Brugge, Belgium</p>
+                        <p class="entry-desc">Panel:<br>News &amp; Politics</p>
+                        <p class="entry-desc entry-project">Project: Modality Matters?!</p>
+                      </article>
+                      <article class="conf-entry">
+                        <p class="entry-date">Thursday, February 1st 2026</p>
+                        <p class="entry-location">Rotterdam, the Netherlands</p>
+                        <p class="entry-desc">Panel:<br>Political communication</p>
+                        <p class="entry-desc entry-project">Project: Embedding on the Wall</p>
+                        <a class="entry-link entry-link--youtube" href="https://www.youtube.com/watch?v=XXXXXXXXXXX" target="_blank" rel="noopener">View presentation on Youtube</a>
+                        <a class="entry-link entry-link--pdf" href="downloads/2026-nefca-rotterdam.pdf" download>Download .pdf with notes</a>
+                      </article>
+                    </div>
+                    <div class="conf-row-nav">
+                      <button class="conf-row-arrow conf-row-arrow--next" type="button" aria-label="Show older NEFCA presentations">&gt;</button>
+                      <button class="conf-row-arrow conf-row-arrow--prev" type="button" aria-label="Show newer NEFCA presentations">&lt;</button>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section class="conf-row conf-row--sm" data-conf="comptext">
+                <div class="conf-row-inner">
+                  <h2 class="conf-tag">COMP<br>TEXT</h2>
+                  <div class="conf-entries-frame">
+                    <div class="conf-entries" data-conf-entries>
+                      <div class="conf-entry conf-entry--spacer" aria-hidden="true"></div>
+                      <article class="conf-entry">
+                        <p class="entry-date">Friday, April 25th 2025</p>
+                        <p class="entry-location">Vienna, Austria</p>
+                      </article>
+                      <article class="conf-entry">
+                        <p class="entry-date">Friday, May 3rd 2024</p>
+                        <p class="entry-location">Amsterdam, the Netherlands</p>
+                      </article>
+                    </div>
+                    <div class="conf-row-nav">
+                      <button class="conf-row-arrow conf-row-arrow--next" type="button" aria-label="Show older COMP TEXT presentations">&gt;</button>
+                      <button class="conf-row-arrow conf-row-arrow--prev" type="button" aria-label="Show newer COMP TEXT presentations">&lt;</button>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section class="conf-row conf-row--sm" data-conf="ecrea">
+                <div class="conf-row-inner">
+                  <h2 class="conf-tag">ECREA</h2>
+                  <div class="conf-entries-frame">
+                    <div class="conf-entries" data-conf-entries>
+                      <div class="conf-entry conf-entry--spacer" aria-hidden="true"></div>
+                      <div class="conf-entry conf-entry--spacer" aria-hidden="true"></div>
+                      <article class="conf-entry">
+                        <p class="entry-date">Thursday, September 4th 2025</p>
+                        <p class="entry-location">Innsbrück, Austria</p>
+                      </article>
+                    </div>
+                    <div class="conf-row-nav">
+                      <button class="conf-row-arrow conf-row-arrow--next" type="button" aria-label="Show older ECREA presentations">&gt;</button>
+                      <button class="conf-row-arrow conf-row-arrow--prev" type="button" aria-label="Show newer ECREA presentations">&lt;</button>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
+    </section>
+
+    <section id="beyond-academia" class="section" data-angle="340">
+      <div class="beyond-hero">
+          <div class="beyond-photo">
+            <img src="vis/mirror_beyond_academia.png" alt="Mirror selfie of Wies Ruyters taking a photo with a Fujifilm camera.">
+          </div>
+          <h2 class="beyond-title beyond-title--perks">Personal<br>Perks</h2>
+          <p class="beyond-copy beyond-copy--perks">
+            <span class="highlight">I live and work in the Netherlands.</span>
+            <span class="highlight">Besides being a nerd I greatly enjoy:</span>
+            <span class="highlight">going outdoors; doing sports (CrossFit,</span>
+            <span class="highlight">running, cycling); photography (I own a</span>
+            <span class="highlight">Fujifilm X100S); travelling; writing</span>
+            <span class="highlight">poetry; cooking; going out; data</span>
+            <span class="highlight">visualization; graphic design.</span>
+          </p>
+
+          <div class="beyond-crowd">
+            <img src="vis/crowd.png" alt="Line drawing of a crowd of people.">
+          </div>
+          <h2 class="beyond-title beyond-title--polarization">Polarization<br>Perspectives</h2>
+          <p class="beyond-copy beyond-copy--polarization">
+            <span class="highlight highlight--yellow">Together with my colleague and fellow PhD</span>
+            <span class="highlight highlight--yellow">Candidate Mariska van Dam, I facilitate</span>
+            <span class="highlight highlight--yellow">workshops on high schools about societal</span>
+            <span class="highlight highlight--yellow">polarization, political communication and</span>
+            <span class="highlight highlight--yellow">media literacy. We have experience with</span>
+            <span class="highlight highlight--yellow">different education levels, in different</span>
+            <span class="highlight highlight--yellow">schools across different parts of the</span>
+            <span class="highlight highlight--yellow">Netherlands. Can we challenge your students</span>
+            <span class="highlight highlight--yellow">the coming season?</span>
+            <span class="highlight highlight--yellow">Send us a message!</span><br>
+            <a href="mailto:wies.ruyters@wur.nl">wies.ruyters@wur.nl</a>
+          </p>
+        </div>
+    </section>
+
+    <section id="contact" class="section" data-angle="90">
+      <div class="contact-page">
+          <div class="contour-halo">
+            <img class="contour-img" src="vis/contour_balloons.svg" alt="A curved list of Wies Ruyters's research interests around a contour: political communication, computational methods, journalism, identity-ideology perceptions, leadership. In the middle: download CV. Around it, balloons linking to LinkedIn, GitHub, YouTube, Google Scholar and Bluesky.">
+
+            <!-- drop a PDF into /downloads (e.g. downloads/CV-wies-ruyters.pdf), then point this href at it -->
+            <a class="cv-hit" href="downloads/CV-wies-ruyters.pdf" download aria-label="Download CV"></a>
+
+            <a class="social-balloon social-balloon--linkedin" href="https://www.linkedin.com/in/wies-ruyters-5a3741134/" target="_blank" rel="noopener noreferrer" aria-label="Wies Ruyters on LinkedIn (opens in a new tab)"></a>
+
+            <a class="social-balloon social-balloon--github" href="https://github.com/wieswies" target="_blank" rel="noopener noreferrer" aria-label="Wies Ruyters on GitHub (opens in a new tab)"></a>
+
+            <!--
+              YouTube channel URL isn't live yet. Once it is, turn this into
+              a real link the same way the others work, e.g.:
+                <a class="social-balloon social-balloon--youtube"
+                   href="https://www.youtube.com/@your-channel"
+                   target="_blank" rel="noopener noreferrer"
+                   aria-label="Wies Ruyters on YouTube (opens in a new tab)"></a>
+            -->
+            <span class="social-balloon social-balloon--youtube" aria-hidden="true"></span>
+
+            <a class="social-balloon social-balloon--scholar" href="https://scholar.google.com/citations?user=jTb0bGYAAAAJ&hl=nl" target="_blank" rel="noopener noreferrer" aria-label="Wies Ruyters on Google Scholar (opens in a new tab)"></a>
+
+            <a class="social-balloon social-balloon--bluesky" href="https://bsky.app/profile/wieswies.bsky.social" target="_blank" rel="noopener noreferrer" aria-label="Wies Ruyters on Bluesky (opens in a new tab)"></a>
+          </div>
+        </div>
+      <footer class="site-footer">© wies ruyters | 2026 | github pages</footer>
     </section>
 
   </main>
 
   <script src="js/gradient.js?v=2" defer></script>
   <script src="js/scroll.js?v=3" defer></script>
+  <script src="js/publications.js?v=8" defer></script>
+  <script src="js/conference.js?v=5" defer></script>
+  <script src="js/links.js?v=1" defer></script>
 </body>
 </html>
