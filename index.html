@@ -31,23 +31,26 @@
     filter: drop-shadow(0 10px 26px rgba(5, 62, 118, 0.2));
   }
 
+  /* bottom-anchored (not top): with fewer, longer sentences than the
+     original hand-broken lines, the block is shorter, so anchoring by
+     its bottom edge keeps that edge where it always was and lets the
+     top simply sit lower - rather than guessing a new top offset by hand. */
   #opening .hero .intro {
     position: absolute;
     left: 58.5%;
-    top: 38.5%;
+    bottom: 7%;
     width: 38.5%;
     font-family: var(--font-mono);
-    font-size: clamp(11px, 1vw, 15px);
+    font-size: clamp(12px, 1.15vw, 17px);
     line-height: 1.65;
     text-align: right;
   }
 
-  #opening .hero .intro .highlight {
-    display: block;
-    width: fit-content;
-    margin-left: auto;
-    white-space: nowrap;
-  }
+  /* each highlight wraps and right-aligns like plain paragraph text;
+     box-decoration-break: clone (from the shared .highlight rule)
+     still draws a separate white chip behind every wrapped line, so
+     this reads correctly at any sentence length without needing the
+     text hand-broken into one <span> per line */
 
   #opening .hero .signoff {
     margin-top: 10px;
@@ -1226,7 +1229,7 @@
         </div>
 
         <p class="intro">
-          <span class="highlight">Hello! I am Wies and I study political communication in the multimodality, 
+          <span class="highlight">Hello! I am Wies and I study political communication in the multimodality,</span>
           <span class="highlight">where visuals and text combined shape the meaning of identity and ideology.</span>
           <span class="highlight">My favorite research methods are computational, but I am currently exploring other methods as well.</span>
           <span class="highlight">Besides my PhD, I also host workshops on high schools about polarisation and media literacy,</span>
