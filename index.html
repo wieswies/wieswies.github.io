@@ -31,10 +31,6 @@
     filter: drop-shadow(0 10px 26px rgba(5, 62, 118, 0.2));
   }
 
-  /* bottom-anchored (not top): with fewer, longer sentences than the
-     original hand-broken lines, the block is shorter, so anchoring by
-     its bottom edge keeps that edge where it always was and lets the
-     top simply sit lower - rather than guessing a new top offset by hand. */
   #opening .hero .intro {
     position: absolute;
     left: 58.5%;
@@ -45,12 +41,6 @@
     line-height: 1.65;
     text-align: right;
   }
-
-  /* each highlight wraps and right-aligns like plain paragraph text;
-     box-decoration-break: clone (from the shared .highlight rule)
-     still draws a separate white chip behind every wrapped line, so
-     this reads correctly at any sentence length without needing the
-     text hand-broken into one <span> per line */
 
   #opening .hero .signoff {
     margin-top: 10px;
@@ -81,10 +71,6 @@
       transform: none;
     }
 
-    /* text first, portrait+names last; the pair is pushed down as a
-       group (margin-top: auto on the first item) to touch the bottom
-       of the screen, mirroring the desktop layout, while staying
-       close together rather than splitting apart */
     #opening .hero .intro {
       order: 1;
       margin-top: auto;
@@ -107,10 +93,6 @@
       margin-left: 0;
     }
   }
-
-  /* ============ scientific projects ============ */
-
-  /* intro copy above the research-area titles */
 
   .sci-intro {
     width: min(90vw, 900px);
@@ -135,10 +117,6 @@
     margin-top: 10px;
   }
 
-  /* one panel, centered on the page both ways: the three research-area
-     titles on top; clicking one opens a narrow box of its projects
-     below, with < > beside it to move between areas */
-
   .pub-wrap {
     position: relative;
     min-height: 100vh;
@@ -158,21 +136,15 @@
   }
 
   .pub-tabs {
-    /* titles are 20px, the picked one 25px (scaled with the window) */
     --t: clamp(11px, 1.3vw, 20px);
     display: flex;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
     gap: 14px 1.5vw;
-    /* tall enough for the 25px title, so nothing below jumps when
-       the picked one grows */
     min-height: calc(var(--t) * 3.2);
     margin: 0 0 36px;
   }
-
-  /* each title is a button: lavender with navy text, and the picked
-     one is inverted (navy with lavender text) and a bit bigger */
 
   .col-title {
     appearance: none;
@@ -219,8 +191,6 @@
     color: var(--lavender);
   }
 
-  /* the box and its buttons: closed until a title is clicked. Hidden
-     with visibility (not display) so the page doesn't reflow */
 
   .pub-viewer {
     width: clamp(340px, 35.5vw, 560px);
@@ -242,8 +212,6 @@
 
   .pub-box {
     width: 100%;
-    /* grows with the window (so the v / ^ buttons below always stay
-       on screen), within sensible limits */
     height: clamp(170px, calc(100vh - 565px), 420px);
     overflow-y: hidden;
     overflow-x: hidden;
@@ -256,9 +224,6 @@
   .pub-box::-webkit-scrollbar {
     display: none;
   }
-
-  /* < > beside the box switch to the previous / next research area;
-     each disappears at the end of the row */
 
   .scroll-arrow {
     position: absolute;
@@ -292,8 +257,6 @@
   .scroll-arrow.is-hidden {
     visibility: hidden;
   }
-
-  /* the v / ^ buttons are always there, full-strength green */
 
   .pub-col-nav {
     display: flex;
@@ -347,8 +310,6 @@
     line-height: 1.55;
   }
 
-  /* one accent for every list: the light purple of the titles */
-
   .pub-list li::before {
     content: "";
     position: absolute;
@@ -386,11 +347,6 @@
     font-style: italic;
   }
 
-  /* on desktop-sized windows, keep the intro, the titles and the box
-     between the fixed top-left menu and the fixed top-right name badge
-     (each ~300px wide), and start right at the top - beside the menu,
-     not below it. The box then takes exactly the height that is left
-     in the window, so it and its buttons are never cut off. */
   @media (min-width: 1000px) {
     .sci-intro {
       width: min(calc(100vw - 660px), 900px);
@@ -409,8 +365,6 @@
       width: min(calc(100vw - 620px), 1000px);
     }
 
-    /* the three titles stay on one row and may run a bit wider than
-       the intro and box - they sit below the menu and badge */
     .pub-tabs {
       width: min(calc(100vw - 80px), 1000px);
       flex-wrap: nowrap;
@@ -461,8 +415,6 @@
       margin-bottom: 24px;
     }
 
-    /* on a phone all three titles are on screen, so no < > needed,
-       and the closed box takes no space at all */
     .pub-viewer {
       width: 100%;
       display: none;
@@ -487,9 +439,6 @@
 
   /* ============ conference presentations ============ */
 
-  /* pale dotted world map, sitting between the gradient wash and the
-     content. Sticky (not fixed): it stays put behind this section while
-     you scroll through it, and scrolls away with it at the end. */
   .conf-globe-bg {
     position: sticky;
     top: 0;
@@ -511,8 +460,6 @@
     padding: 230px 4vw 60px;
   }
 
-  /* the overview is one card a bit over half the window wide (based on
-     page_design/page_03), centered; the tags straddle its left edge */
   .conf-panel {
     width: clamp(640px, 60vw, 960px);
     display: flex;
@@ -534,7 +481,6 @@
     font-style: italic;
   }
 
-  /* keep the "< >" symbol pair on one line */
   .conf-intro .highlight--blue {
     white-space: nowrap;
   }
@@ -553,8 +499,6 @@
     padding: 4px 12px;
   }
 
-  /* rows stack into one card, alternating a brighter and a paler
-     white; the corners of the first and last row round it off */
   .conf-list {
     width: 100%;
     display: flex;
@@ -581,7 +525,6 @@
     position: relative;
   }
 
-  /* tag sits centered on the card's left edge, halfway down its row */
   .conf-tag {
     position: absolute;
     left: 0;
@@ -606,7 +549,6 @@
     padding: 5px 8px;
   }
 
-  /* room on the left for the tag, on the right for the < > buttons */
   .conf-entries-frame {
     position: relative;
     min-width: 0;
@@ -621,10 +563,6 @@
   .conf-entries {
     display: flex;
     gap: 20px;
-    /* hidden, not auto: horizontal movement only ever comes from a
-       row's own < / > buttons (scrollBy), never a drag/wheel/touch
-       swipe - that swipe used to get mistaken for the page's own
-       vertical scroll and swallow it */
     overflow-x: hidden;
     overscroll-behavior: contain;
     scroll-behavior: smooth;
@@ -672,8 +610,6 @@
     pointer-events: none;
   }
 
-  /* three columns fill a row; a fourth and beyond are reached with
-     the row's < > buttons. Each entry is a tinted block with a navy bar. */
   .conf-entry {
     flex: 0 0 auto;
     width: calc((100% - 40px) / 3);
@@ -698,8 +634,6 @@
     width: 7px;
   }
 
-  /* blank placeholder column: keeps an older-only conference's
-     entries lined up under the same columns as the rows above */
   .conf-entry--spacer {
     visibility: hidden;
     pointer-events: none;
@@ -731,7 +665,6 @@
     line-height: 1.4;
   }
 
-  /* the "Project:" line sits right under the "Panel:" line */
   .entry-project {
     margin-top: -4px;
   }
@@ -771,9 +704,6 @@
     color: rgb(8, 211, 123);
   }
 
-  /* on desktop-sized windows, keep the intro between the fixed top-left
-     menu and the fixed top-right name badge, and start right at the top
-     (beside the menu, not below it) so the card gets more room */
   @media (min-width: 1000px) {
     .conf-page {
       padding-top: 40px;
@@ -836,8 +766,6 @@
       gap: 16px;
     }
 
-    /* one presentation block per box on mobile: entries take the
-       full row width, paged one at a time with the < > buttons */
     .conf-entry {
       width: 100%;
       min-width: 0;
@@ -865,8 +793,6 @@
     max-width: 100vw;
     margin: 0 auto;
   }
-
-  /* static visuals + labels + text, no hover/interaction */
 
   .beyond-photo {
     position: absolute;
@@ -1028,9 +954,6 @@
 
   /* ============ contact ============ */
 
-  /* The contact section is exactly one window tall (no scrolling inside
-     it): the halo is sized by the room that's left between the top of
-     the window (or the header) and the footer, as well as by the width. */
   .contact-page {
     --halo-top: calc(var(--header-h) + 12px);
     --halo-bottom: 56px; /* leaves room for the footer */
@@ -1043,12 +966,6 @@
     padding: var(--halo-top) 4vw var(--halo-bottom);
   }
 
-  /* the contour + all five balloons are baked into one image now
-     (vis/contour_balloons.svg, exported already laid out as a halo),
-     so there's no more separate per-balloon positioning to keep in
-     sync - just transparent hit-regions placed on top at the same
-     percentages the image itself uses, which is also why this scales
-     cleanly to mobile without a second set of positions. */
   .contour-halo {
     position: relative;
     width: min(84vw, 820px, var(--halo-fit));
@@ -1062,12 +979,6 @@
     height: 100%;
   }
 
-  /*
-    No CV file on the site yet. To wire this up: drop a PDF into the
-    /downloads folder (e.g. downloads/CV-wies-ruyters.pdf), then set
-    this link's href to it - the `download` attribute makes it save
-    instead of navigating.
-  */
   .cv-hit {
     position: absolute;
     left: 46.2%;
@@ -1113,7 +1024,6 @@
     width: 24.7%;
     height: 22.1%;
     cursor: default;
-    /* no youtube URL yet - see the HTML comment above this element */
   }
 
   .social-balloon--scholar {
@@ -1147,8 +1057,6 @@
       padding: var(--halo-top) 20px var(--halo-bottom);
     }
 
-    /* the halo uses the same percentages at every width - it's one
-       image, so it just scales down as a whole with the container */
     .contour-halo {
       width: min(90vw, 380px, var(--halo-fit));
     }
@@ -1409,7 +1317,7 @@
                         <p class="entry-location">Denver Colorado, USA</p>
                         <p class="entry-desc">Pre-Conference:<br>Frames of visual transition</p>
                         <p class="entry-desc entry-project">Project: Modality Matters?!</p>
-                        <a class="entry-link entry-link--youtube" href="https://www.youtube.com/watch?v=XXXXXXXXXXX" target="_blank" rel="noopener">View presentation on Youtube</a>
+                        <a class="entry-link entry-link--youtube" href="https://youtu.be/Tr43sv_KZCA" target="_blank" rel="noopener">View presentation on Youtube</a>
                         <a class="entry-link entry-link--pdf" href="downloads/250604 ICA MM presentation.pdf" download>Download .pdf with notes</a>
                       </article>
                     </div>
@@ -1505,7 +1413,7 @@
           <div class="beyond-photo">
             <img src="vis/mirror_beyond_academia.png" alt="Mirror selfie of Wies Ruyters taking a photo with a Fujifilm camera.">
           </div>
-          <h2 class="beyond-title beyond-title--perks">Personal<br>Perks</h2>
+          <h2 class="beyond-title beyond-title--perks">ABOUT<br>ME</h2>
           <p class="beyond-copy beyond-copy--perks">
             <span class="highlight">I live and work in the Netherlands.</span>
             <span class="highlight">Besides being a nerd I greatly enjoy:</span>
@@ -1519,7 +1427,7 @@
           <div class="beyond-crowd">
             <img src="vis/crowd.png" alt="Line drawing of a crowd of people.">
           </div>
-          <h2 class="beyond-title beyond-title--polarization">Polarization<br>Perspectives</h2>
+          <h2 class="beyond-title beyond-title--polarization">POLARIZATION<br>WORKSHOPS</h2>
           <p class="beyond-copy beyond-copy--polarization">
             <span class="highlight highlight--yellow">Together with my colleague and fellow PhD</span>
             <span class="highlight highlight--yellow">Candidate Mariska van Dam, I facilitate</span>
@@ -1540,21 +1448,18 @@
           <div class="contour-halo">
             <img class="contour-img" src="vis/contour_balloons.svg" alt="A curved list of Wies Ruyters's research interests around a contour: political communication, computational methods, journalism, identity-ideology perceptions, leadership. In the middle: download CV. Around it, balloons linking to LinkedIn, GitHub, YouTube, Google Scholar and Bluesky.">
 
-            <!-- drop a PDF into /downloads (e.g. downloads/CV-wies-ruyters.pdf), then point this href at it -->
             <a class="cv-hit" href="downloads/Wies Ruyters - CV.pdf" download aria-label="Download CV"></a>
 
             <a class="social-balloon social-balloon--linkedin" href="https://www.linkedin.com/in/wies-ruyters-5a3741134/" target="_blank" rel="noopener noreferrer" aria-label="Wies Ruyters on LinkedIn (opens in a new tab)"></a>
 
             <a class="social-balloon social-balloon--github" href="https://github.com/wieswies" target="_blank" rel="noopener noreferrer" aria-label="Wies Ruyters on GitHub (opens in a new tab)"></a>
 
-            <!--
-              YouTube channel URL isn't live yet. Once it is, turn this into
-              a real link the same way the others work, e.g.:
-                <a class="social-balloon social-balloon--youtube"
-                   href="https://www.youtube.com/@your-channel"
+            
+            <a class="social-balloon social-balloon--youtube"
+                   href="https://www.youtube.com/@wiesruyters"
                    target="_blank" rel="noopener noreferrer"
                    aria-label="Wies Ruyters on YouTube (opens in a new tab)"></a>
-            -->
+            
             <span class="social-balloon social-balloon--youtube" href="https://www.youtube.com/channel/UCe5yPcR7UNs-bwAafeygM3w" target="_blank" rel="noopener noreferrer" aria-label="Wies Ruyters on YouTube (opens in a new tab)"</span>
 
             <a class="social-balloon social-balloon--scholar" href="https://scholar.google.com/citations?user=jTb0bGYAAAAJ&hl=nl" target="_blank" rel="noopener noreferrer" aria-label="Wies Ruyters on Google Scholar (opens in a new tab)"></a>
